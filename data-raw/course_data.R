@@ -1,15 +1,11 @@
 # This contains the script for collecting the course catalog information from the
 # Smith website
 
-
-# This is Hebe
-# This contains the script for collecting the course catalog information from the
-# Smith website
-
 # hi this is Mattea
 library(tidyverse)
 library(rvest)
 library(dplyr)
+library(stringr)
 
 url <- "https://www.smith.edu/apps/course_search/"
 
@@ -48,14 +44,14 @@ for (course_element in course_elements) {
   course_instructor <- html_text(html_node(course_element, ".course-section-instructor"))
   course_status <- html_text(html_node(course_element, ".course-section-status"))
 
-  credits <- html_text(html_node(course_element, "span.course-result-detail.course-credits"))
-  max_enroll <- html_text(html_node(course_element, "span.course-result-detail.course-enrollment_max"))
-  section_enroll <- html_text(html_node(course_element, "span.course-result-detail.course-enrollment_tot"))
-  waitlist <- html_text(html_node(course_element, "span.course-result-detail.course-enrollment-waitlist"))
-  reserved <- html_text(html_node(course_element, "span.course-result-detail.course-reserved-ind"))
+  credits <- html_text(html_node(course_element, "span.course-result-detail.course-credits")) |> substring(10, )
+  max_enroll <- html_text(html_node(course_element, "span.course-result-detail.course-enrollment_max")) |> substring(17,)
+  section_enroll <- html_text(html_node(course_element, "span.course-result-detail.course-enrollment_tot")) |> substring(21, )
+  waitlist <- html_text(html_node(course_element, "span.course-result-detail.course-enrollment-waitlist")) |> substring(18, )
+  reserved <- html_text(html_node(course_element, "span.course-result-detail.course-reserved-ind")) |> substring(17, )
   distribution <- html_text(html_node(course_element, "span.course-result-detail.course-todo"))
-  meeting_time <- html_text(html_node(course_element, "span.course-result-detail.course-meeting"))
-  description <- html_text(html_node(course_element, ".course_result-detail.course_description div p"))
+  meeting_time <- html_text(html_node(course_element, "span.course-result-detail.course-meeting")) |> substring(16, )
+  description <- html_text(html_node(course_element, "span.course-result-detail.course-description p"))
 
   course_data <- course_data |>
     add_row(
@@ -76,6 +72,5 @@ for (course_element in course_elements) {
       description = description
     )
 }
-
 
 
