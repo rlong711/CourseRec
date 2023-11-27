@@ -50,7 +50,7 @@ for (course_element in course_elements) {
   reserved <- html_text(html_node(course_element, "span.course-result-detail.course-reserved-ind"))
   distribution <- html_text(html_node(course_element, "span.course-result-detail.course-todo"))
   meeting_time <- html_text(html_node(course_element, "span.course-result-detail.course-meeting"))
-  description <- html_text(html_node(course_element, "span.course_result-detail.course_description p"))
+  description <- html_text(html_node(course_element, "span.course-result-detail.course-description p"))
 
   course_data <- course_data |>
     add_row(
