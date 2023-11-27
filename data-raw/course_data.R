@@ -23,6 +23,7 @@ course_data <- data.frame(
   max_enroll = character(),
   section_enroll = character(),
   waitlist = character(),
+  reserved = character(),
   distribution = character(),
   meeting_time = character(),
   description = character(),
@@ -42,14 +43,14 @@ for (course_element in course_elements) {
   course_instructor <- html_text(html_node(course_element, ".course-section-instructor"))
   course_status <- html_text(html_node(course_element, ".course-section-status"))
 
- # collapsed <- html_node(course_element, ".collapse.in.card.card-body.course-detail-body")
- # credits <- html_text(html_node(collapsed, ".course-credits"))
- # max_enroll <- html_text(html_node(collapsed, ".course-enrollment_max"))
- # section_enroll <- html_text(html_node(collapsed, ".course-enrollment_tot"))
- # waitlist <- html_text(html_node(collapsed, ".course-enrollment-waitlist"))
-  #distribution <- html_text(html_node(collapsed, ".course-todo:contains('Curriculum Distribution')"))
-  #meeting_time <- html_text(html_node(collapsed, ".course-meeting"))
- # description <- html_text(html_node(collapsed, ".course-description p"))
+  credits <- html_text(html_node(course_element, "span.course-result-detail.course-credits"))
+  max_enroll <- html_text(html_node(course_element, "span.course-result-detail.course-enrollment_max"))
+  section_enroll <- html_text(html_node(course_element, "span.course-result-detail.course-enrollment_tot"))
+  waitlist <- html_text(html_node(course_element, "span.course-result-detail.course-enrollment-waitlist"))
+  reserved <- html_text(html_node(course_element, "span.course-result-detail.course-reserved-ind"))
+  distribution <- html_text(html_node(course_element, "span.course-result-detail.course-todo"))
+  meeting_time <- html_text(html_node(course_element, "span.course-result-detail.course-meeting"))
+  description <- html_text(html_node(course_element, "span.course_result-detail.course_description p"))
 
   course_data <- course_data |>
     add_row(
@@ -59,14 +60,15 @@ for (course_element in course_elements) {
       course_section = course_section,
       course_name = course_name,
       course_instructor = course_instructor,
-      course_status = course_status
-      #credits = credits,
-     # max_enroll = max_enroll,
-     # section_enroll = section_enroll,
-     # waitlist = waitlist,
-     # distribution = distribution,
-     # meeting_time = meeting_time,
-     # description = description
+      course_status = course_status,
+      credits = credits,
+      max_enroll = max_enroll,
+      section_enroll = section_enroll,
+      waitlist = waitlist,
+      reserved = reserved,
+      distribution = distribution,
+      meeting_time = meeting_time,
+      description = description
     )
 }
 
