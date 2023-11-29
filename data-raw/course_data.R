@@ -1,7 +1,5 @@
-# This contains the script for collecting the course catalog information from the
-# Smith website
+# Code to prepare course_data dataset
 
-# hi this is Hebe
 library(tidyverse)
 library(rvest)
 library(dplyr)
@@ -70,4 +68,4 @@ for (course_element in course_elements) {
     )
 }
 
-
+usethis::use_data(course_data, overwrite = TRUE)
