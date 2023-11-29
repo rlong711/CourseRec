@@ -68,4 +68,6 @@ for (course_element in course_elements) {
     )
 }
 
+course_data$course_id = paste(course_data$course_sub, course_data$course_num, course_data$course_section, sep = "")
+
 usethis::use_data(course_data, overwrite = TRUE)
