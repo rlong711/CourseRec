@@ -25,7 +25,6 @@ course_data <- data.frame(
   section_enroll = character(),
   waitlist = character(),
   reserved = character(),
-  distribution = character(),
   meeting_time = character(),
   description = character(),
   stringsAsFactors = FALSE
@@ -49,7 +48,6 @@ for (course_element in course_elements) {
   section_enroll <- html_text(html_node(course_element, "span.course-result-detail.course-enrollment_tot")) |> substring(21, )
   waitlist <- html_text(html_node(course_element, "span.course-result-detail.course-enrollment-waitlist")) |> substring(18, )
   reserved <- html_text(html_node(course_element, "span.course-result-detail.course-reserved-ind")) |> substring(17, )
-  distribution <- html_text(html_node(course_element, "span.course-result-detail.course-todo"))
   meeting_time <- html_text(html_node(course_element, "span.course-result-detail.course-meeting")) |> substring(16, )
   description <- html_text(html_node(course_element, "span.course-result-detail.course-description p"))
 
@@ -67,7 +65,6 @@ for (course_element in course_elements) {
       section_enroll = section_enroll,
       waitlist = waitlist,
       reserved = reserved,
-      distribution = distribution,
       meeting_time = meeting_time,
       description = description
     )
