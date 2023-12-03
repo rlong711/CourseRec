@@ -46,7 +46,7 @@ course_recommend("AFR11701","AFR17501","AFR202aa01")
 # x is the set of classes you're currently taking
 x <- data.frame(
   times = c(
-    "Monday/Wednesday | 9:25 AM - 10:40 AM",
+    "Tuesday/Thursday | 8:25 AM - 9:15 AM / Sabin-Reed 305 ",
     "Wednesday/Friday | 1:20 PM - 2:35 PM; Monday | 1:40 PM - 2:55 PM / Hatfield 206",
     "Tuesday | 1:20 PM - 4:00 PM"
   )
@@ -58,7 +58,9 @@ y <- "Tuesday | 1:20 PM - 2:35 PM"
 ## Some classes have a location at the end of meeting time string,
 ## This functions will remove them
 remove_locations <- function(x) {
-  sub(" \\/ [[:alnum:] ]+$", "", x)
+  z <- mgsub(pattern = c("Sabin-Reed ", "Ainsworth 304; ", "Ainsworth Gym; ", "[0-9]; "),
+             replacement = c("SR ", "AG ", "AG ", " "), string = x)
+  sub(" \\/ [[:alnum:] ]+$", "", z)
 }
 
 x$times <- remove_locations(x$times)
