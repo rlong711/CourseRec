@@ -46,24 +46,18 @@ course_recommend("AFR11701","AFR17501","AFR202aa01")
 # x is the set of classes you're currently taking
 x <- data.frame(
   times = c(
-    "Tuesday/Thursday | 8:25 AM - 9:15 AM / Sabin-Reed 305 ",
-    "Wednesday/Friday | 1:20 PM - 2:35 PM; Monday | 1:40 PM - 2:55 PM / Hatfield 206",
+    "Tuesday/Thursday | 8:25 AM - 9:15 AM",
+    "Wednesday/Friday | 1:20 PM - 2:35 PM; Monday | 1:40 PM - 2:55 PM",
     "Tuesday | 1:20 PM - 4:00 PM"
   )
 )
-# y is class you want to see if it will fit in your schedule
 
-y <- "Tuesday | 1:20 PM - 2:35 PM"
+# y contains all classes in the dataframe, which you want to see if it will fit in your schedule
+# remove rows where meeting_time is NA to avoid error
 
-## Some classes have a location at the end of meeting time string,
-## This functions will remove them
-remove_locations <- function(x) {
-  z <- mgsub(pattern = c("Sabin-Reed ", "Ainsworth 304; ", "Ainsworth Gym; ", "[0-9]; "),
-             replacement = c("SR ", "AG ", "AG ", " "), string = x)
-  sub(" \\/ [[:alnum:] ]+$", "", z)
-}
+course_data_na_removed <- course_data[!is.na(course_data$meeting_time), ]
 
-x$times <- remove_locations(x$times)
+y <- course_data_na_removed$meeting_time
 
 fine_grained_schedule <- function(x) {
   ## Split into pieces based on semicolon. This important for classes that have different meeting
