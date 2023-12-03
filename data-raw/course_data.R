@@ -4,6 +4,7 @@ library(tidyverse)
 library(rvest)
 library(dplyr)
 library(stringr)
+library(mgsub)
 
 url <- "https://www.smith.edu/apps/course_search/"
 
@@ -69,5 +70,15 @@ for (course_element in course_elements) {
 }
 
 course_data$course_id = paste(course_data$course_sub, course_data$course_num, course_data$course_section, sep = "")
+
+## Some classes have a location at the end of meeting time string,
+## This functions will remove them
+remove_locations <- function(x) {
+  z <- mgsub(pattern = c("Sabin-Reed ", "Ainsworth 304; ", "Ainsworth Gym; ", "[0-9]; "),
+             replacement = c("SR ", "AG ", "AG ", " "), string = x)
+  sub(" \\/ [[:alnum:] ]+$", "", z)
+}
+
+course_data$meeting_time <- remove_locations(course_data$meeting_time)
 
 usethis::use_data(course_data, overwrite = TRUE)
