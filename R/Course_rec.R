@@ -13,8 +13,8 @@ course_time <- function(course, data = course_data_na_removed) {
     course_id <- data[row, "course_id"]
 
     if (setequal(course_id,course)) {
-              course_time <- course_data[row, "meeting_time"]
-            }
+      course_time <- course_data[row, "meeting_time"]
+    }
   }
 
   return(course_time)
@@ -129,8 +129,57 @@ course_recommend <- function(course1, course2, course3, data = course_data_na_re
 }
 
 available_courses <- course_recommend(test_input)
+available_courses
 
 
+# approach 1 for specifying department
+
+# course_recommend_department <- function(course1, course2, course3, department, data = course_data_na_removed) {
+#   matching_rows <- grep(paste0("^", department), data$course_id, value = TRUE)
+#
+#   filtered_data <- data[matching_rows, ]
+#
+#   available_courses <- course_recommend(course1, course2, course3, data= filtered_data)
+#
+#   return(available_courses)
+# }
+#
+# course_recommend_department('AFR11701', 'AFR17501', 'AFR24901', 'MTH')
+
+
+# okay back to the old approach
+
+course_rec_dept <- function(course1, course2, course3, dept, data = course_data_na_removed) {
+  courses <- c(course1, course2, course3)
+
+  if(!all(courses %in% data$course_id)) {
+    warning("Please reenter courses in correct format")
+    return(NULL)
+  }
+
+  current_courses_schedule <- course_schedule(course1, courses2, courses3, data) |>
+    purrr::map(fine_grained_schedule)
+
+  all_courses_schedule <- data$meeting_time |>
+    purrr::map(fine_grained_schedule)
+
+  overlap <- all_courses_schedule |>
+    purrr::map_lgl(\(x) {
+      purrr::map(current_courses_schedule, find_overlap, x) |>
+        unlist() |>
+        any()
+    })
+
+  overlap[is.na(overlap)] <- FALSE
+
+  data$overlap <- overlap
+
+  available_classes <- data[data$course_dept == dept & !data$course_id %in% courses & !data$overlap, ]
+  available_courses <- available_classes$course_id
+  return(available_courses)
+}
+
+course_rec_dept('AFR11701', 'AFR17501', 'AFR24901', 'MTH')
 
 
 
