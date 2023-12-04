@@ -1,12 +1,18 @@
-library(usethis)
-library(devtools)
-
 # remove rows where meeting_time is NA to avoid error
 course_data_na_removed <- course_data[!is.na(course_data$meeting_time), ]
 
-test_input <- c("AFR11701", "AFR17501", "AFR202aa01")
-
-## function to return meeting time of inputted course as a chr string
+#' @title Generate the meeting time of a course
+#'
+#' @description
+#' Given a course ID and a data set of all courses, this function returns the meeting time of the inputted course as a character string,
+#' if the course ID exists in courses data set.
+#'
+#' @param course A character vector identifying a course ID.
+#' @param data A data set containing the entire course schedule. The default data set contains the course schedule of
+#' all spring 2024 courses at Smith College.
+#' @return A character vector of the meeting time of the course.
+#'
+#' @export
 course_time <- function(course, data = course_data_na_removed) {
 
   for (row in 1:nrow(data)) {
@@ -20,10 +26,18 @@ course_time <- function(course, data = course_data_na_removed) {
   return(course_time)
 }
 
-# test_schedule <- purrr::map_chr(test_input, course_time)
 
-
-## function to generate dataframe containing meeting times for 3 courses
+#' @title Generate a course schedule for 3 courses
+#'
+#' @description
+#' Given three character vectors of course IDs, this function returns their meeting times as a column in a data frame
+#'
+#' @param course1 the first course
+#' @param course2 the second course
+#' @param course3 the third course
+#' @param data A data set containing entire course schedule. The default data set contains course schedule of
+#' all spring 2024 courses at Smith College.
+#' @return A data frame containing one column, which is a character vector of three meeting times
 course_schedule <- function(course1, course2, course3, data = course_data_na_removed) {
   schedule_chr <- purrr::map_chr(test_input, course_time)
 
@@ -34,9 +48,14 @@ course_schedule <- function(course1, course2, course3, data = course_data_na_rem
   return(schedule_df)
 }
 
-# course_schedule(test_input)
 
-## function to generate fine grained schedule, input type: dataframe
+#' @title Generate a fine grained schedule for course meeting times.
+#'
+#' @description
+#' Given a character vector of course meeting times, this function returns a fine grained schedule.
+#'
+#' @param x A character vector of course meeting times.
+#' @return A list of fine grained schedules indicating one start time and one end time for each weekday.
 fine_grained_schedule <- function(x) {
   ## Split into pieces based on semicolon. This important for classes that have different meeting
   ## times on different days of the week.
@@ -64,9 +83,16 @@ fine_grained_schedule <- function(x) {
 }
 
 
-## function to see if two fine grained schedules contain any time conflicts
+#' @title Find if there's a time conflict between two fine grained schedules
+#'
+#' @description
+#' Given two fine grained schedules, this function checks if they have any time conflicts
+#'
+#' @param a the first fine grained schedule
+#' @param b the second fine grained schedule
+#' @return A logical vector. TRUE if there is a time conflict, FALSE if not.
 find_overlap <- function(a, b) {
-  # a and b are class schedules that have been turned into 'fine grained schedules'
+
   candidate_days <- a[names(b)]
 
   if (length(intersect(names(b), names(a))) == 0) {
@@ -94,7 +120,22 @@ find_overlap <- function(a, b) {
 }
 
 
-## course recommender, what the user calls to recommend courses
+#' @title Generate all available courses
+#'
+#' @description
+#' Given three courses the user plans to take,
+#' this functions returns a character vector of all courses available to the user.
+#'
+#' @param course1 the first course the user plans to take
+#' @param course2 the second course the user plans to take
+#' @param course3 the third course the user plans to take
+#' @param data Data set containing entire course schedule. The default data set contains course schedule of
+#' all spring 2024 courses at Smith College.
+#' @return A character vector of the course IDs of all available courses, meaning courses that do not have a
+#' time conflict with what the user's three courses.
+#' @importFrom purrr map
+#'
+#' @export
 course_recommend <- function(course1, course2, course3, data = course_data_na_removed) {
 
   current_courses_schedule <- course_schedule(course1, course2, course3, data) |>
@@ -127,8 +168,6 @@ course_recommend <- function(course1, course2, course3, data = course_data_na_re
 
   return(available_courses)
 }
-
-available_courses <- course_recommend(test_input)
 
 
 
