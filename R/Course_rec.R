@@ -40,10 +40,6 @@ course_schedule <- function(course1, course2, course3, data = course_data_na_rem
 fine_grained_schedule <- function(x) {
   ## Split into pieces based on semicolon. This important for classes that have different meeting
   ## times on different days of the week.
-
-  if (length(x) == 0) {
-    return(NULL)
-  }
   x <- strsplit(x, split = "; ", fixed = TRUE) |> unlist()
 
   extract_weekdays <- function(x) {
@@ -57,15 +53,7 @@ fine_grained_schedule <- function(x) {
 
   times <- extract_start_and_end(x)
 
-  if (length(weekdays) == 0 || length(times) == 0) {
-    return(NULL)
-  }
-
-  start_and_end <- strsplit(times, " ") |>
-    unlist() |>
-    matrix(ncol = 2, byrow = TRUE, dimnames = list(NULL, c("start", "end")))
-
-  x <- purrr::map2(weekdays, start_and_end, \(w, t) {
+  x <- purrr::map2(weekdays, times, \(w, t) {
     names(t) <- c("start", "end")
     a <- rep(list(t), length(w))
     names(a) <- w
@@ -141,7 +129,6 @@ course_recommend <- function(course1, course2, course3, data = course_data_na_re
 }
 
 available_courses <- course_recommend(test_input)
-
 
 
 course_recommend_department <- function(course1, course2, course3, department, data = course_data_na_removed) {
