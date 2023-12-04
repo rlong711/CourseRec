@@ -130,3 +130,39 @@ course_recommend_department <- function(course1, course2, course3, department, d
 
 course_recommend_department('AFR11701', 'AFR17501', 'AFR24901', 'MTH')
 
+
+# okay back to the old approach
+
+course_rec_dept <- function(course1, course2, course3, dept, data = course_data_na_removed) {
+  courses <- c(course1, course2, course3)
+
+  if(!all(courses %in% course_data$course_id)) {
+    warning("Please reenter courses in correct format")
+    return(NULL)
+  }
+
+  current_courses_schedule <- course_schedule(course[1], courses[2], courses[3], data) |>
+    purrr::map(fine_grained_schedule)
+
+  all_courses_schedule <- course_data$meeting_time |>
+    purrr::map(fine_grained_schedule)
+
+  overlap <- all_courses_schedule |>
+    purrr::map_lgl(\(x) {
+      purrr::map(current_courses_schedule, find_overlap, x) |>
+        unlist() |>
+        any()
+    })
+
+  overlap[is.na(overlap)] <- FALSE
+
+  course_data$overlap <- overlap
+
+  available_classes <- course_data[course_data$course_dept == dept & !course_data$course_id %in% courses & !course_data$overlap, ]
+  available_courses <- available_classes$course_id
+  recommendations <- course_recommend(course1, course2, course3, data)
+  return(recommendations)
+}
+
+course_rec_dept('AFR11701', 'AFR17501', 'AFR24901', 'MTH')
+
