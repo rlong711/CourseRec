@@ -125,7 +125,25 @@
 
 # Function to specify the department!
 
+course_rec_dept <- function(courses, course_dept) {
+  if (!all(courses %in% course_data$course_id)) {
+    warning("One or more classes entered is not offered. Please reenter courses correctly.")
+    return(NULL)
+  }
+
+  selected_courses_df <- df[course_data$course_id %in% courses, ]
+  selected_meeting_times <- unique(sapply(selected_courses_df$meeting_time, function(x) strsplit(x, '\\| ')[[1]]))
+  available_classes <- df[course_data$course_dept == course_dept &! (course_data$course_id %in% courses), ]
+
+  available_classes <- available_classes[!apply(available_classes, 1, function(x) {
+    class_meeting_times <- strsplit(x['meeting_times'], ' \\| ')[[1]]
+    any(class_meeting_times %in% selected_meeting_times)
+  }), ]
+
+  return(available_classes)
+}
 
 
+# Test
 
-
+course_rec_dept(c('AFR24901', 'AFR11701', 'AFR17501'), 'MTH')
