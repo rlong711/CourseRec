@@ -167,7 +167,7 @@ course_rec_dept <- function(course1, course2, course3, dept, data = course_data_
     return(NULL)
   }
 
-  current_courses_schedule <- course_schedule(course[1], courses[2], courses[3], data) |>
+  current_courses_schedule <- course_schedule(course1, courses2, courses3, data) |>
     purrr::map(fine_grained_schedule)
 
   all_courses_schedule <- course_data$meeting_time |>
