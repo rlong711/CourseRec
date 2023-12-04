@@ -151,3 +151,33 @@ course_rec_dept <- function(courses, course_dept) {
 # Test
 
 course_rec_dept(c('AFR24901', 'AFR11701', 'AFR17501'), 'MTH')
+
+# # Trying with using the basic function
+
+course_rec_dept <- function(courses, course_dept) {
+  if (!all(courses %in% course_data$course_id)) {
+    warning("Please reenter courses in correct format")
+    return(NULL)
+  }
+
+  selected_courses_df <- course_data[course_data$course_id %in% courses, ]
+  selected_meeting_times <- unique(sapply(selected_courses_df$meeting_time, function(x) strsplit(x, ' \\| ')[[1]]))
+  selected_meeting_days <- unique(unlist(sapply(selected_meeting_times, function(x) strsplit(x, ' ')[[1]][[1]])))
+
+  available_classes <- course_data[course_data$course_dept == course_dept & !(course_data$course_id %in% courses), ]
+
+  available_classes <- available_classes[!apply(available_classes, 1, function(x) {
+    class_meeting_times <- strsplit(x['meeting_time'], ' \\| ')[[1]]
+    class_meeting_days <- unique(unlist(sapply(class_meeting_times, function(x) strsplit(x, ' ')[[1]][[1]])))
+    overlap <- any(class_meeting_days %in% selected_meeting_days) && any(class_meeting_times %in% selected_meeting_times)
+    overlap
+  }), ]
+
+  available_courses <- available_classes$course_id
+
+  recommendations <- course_recommend(courses[1], courses[2], course[3], available_courses)
+  return(recommendations)
+}
+
+course_rec_dept(c('AFR24901', 'AFR11701', 'AFR17501'), 'MTH')
+
