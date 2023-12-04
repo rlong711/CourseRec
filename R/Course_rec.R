@@ -132,5 +132,22 @@ available_courses <- course_recommend(test_input)
 
 
 
+## Function to return courses with specific course_subject code
+
+subject_rec <- function(subject_code) {
+
+  rec <- dplyr::filter(course_data, course_sub == subject_code) |>
+    dplyr::select(course_id, course_name, meeting_time, description)
+
+  rec$course_name |>
+    stringr::str_replace_all("\n | \n", "")
+
+  return(rec)
+}
+
+subject_rec("AMS")
+
+
+
 
 
