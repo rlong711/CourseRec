@@ -174,8 +174,7 @@ course_rec_dept <- function(course1, course2, course3, dept, data = course_data_
 
   available_classes <- course_data[course_data$course_dept == dept & !course_data$course_id %in% courses & !course_data$overlap, ]
   available_courses <- available_classes$course_id
-  recommendations <- course_recommend(course1, course2, course3, data)
-  return(recommendations)
+  return(available_courses)
 }
 
 course_rec_dept('AFR11701', 'AFR17501', 'AFR24901', 'MTH')
