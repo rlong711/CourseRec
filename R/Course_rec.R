@@ -134,17 +134,17 @@ available_courses
 
 # approach 1 for specifying department
 
-# course_recommend_department <- function(course1, course2, course3, department, data = course_data_na_removed) {
-#   matching_rows <- grep(paste0("^", department), data$course_id, value = TRUE)
-#
-#   filtered_data <- data[matching_rows, ]
-#
-#   available_courses <- course_recommend(course1, course2, course3, data= filtered_data)
-#
-#   return(available_courses)
-# }
-#
-# course_recommend_department('AFR11701', 'AFR17501', 'AFR24901', 'MTH')
+course_recommend_department <- function(course1, course2, course3, department, data = course_data_na_removed) {
+  matching_rows <- grep(paste0("^", department), data$course_id, value = TRUE)
+
+  filtered_data <- data[matching_rows, ]
+
+  available_courses <- course_recommend(course1, course2, course3, data= filtered_data)
+
+  return(available_courses)
+}
+
+course_recommend_department('AFR11701', 'AFR17501', 'AFR24901', 'MTH')
 
 
 # okay back to the old approach
@@ -176,10 +176,10 @@ course_rec_dept <- function(course1, course2, course3, dept, data = course_data_
 
   available_classes <- data[data$course_dept == dept & !data$course_id %in% courses & !data$overlap, ]
   available_courses <- available_classes$course_id
-  return(available_courses)
+  return(as.data.frame(available_courses))
 }
 
-course_rec_dept('AFR11701', 'AFR17501', 'AFR24901', 'MTH')
-
+recs <- course_rec_dept('AFR11701', 'AFR17501', 'AFR24901', 'MTH')
+recs
 
 
