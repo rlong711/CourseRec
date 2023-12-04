@@ -133,11 +133,15 @@ course_rec_dept <- function(courses, course_dept) {
 
   selected_courses_df <- course_data[course_data$course_id %in% courses, ]
   selected_meeting_times <- unique(sapply(selected_courses_df$meeting_time, function(x) strsplit(x, '\\| ')[[1]]))
-  available_classes <- course_data[course_data$course_dept == course_dept &! (course_data$course_id %in% courses), ]
+  selected_meeting_days <- unique(unlist(sapply(selected_meeting_times, function(x) strsplit(x, ' ')[[1]][[1]])))
+
+  available_classes <- course_data[course_data$course_dept == course_dept & ! (course_data$course_id %in% courses), ]
 
   available_classes <- available_classes[!apply(available_classes, 1, function(x) {
-    class_meeting_times <- strsplit(x['meeting_times'], ' \\| ')[[1]]
-    any(class_meeting_times %in% selected_meeting_times)
+    class_meeting_times <- strsplit(x['meeting_time'], '\\| ')[[1]]
+    class_meeting_days <- unique(unlist(sapply(class_meeting_times, function(x) strsplit(x, ' ')[[1]][[1]])))
+    overlap <- any(class_days &in& selected_meeting_days) && any(class_meeting_times %in% selected_meeting_times)
+    overlap
   }), ]
 
   return(available_classes)
