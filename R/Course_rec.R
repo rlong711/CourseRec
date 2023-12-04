@@ -1,5 +1,7 @@
 library(usethis)
 library(devtools)
+library(dplyr)
+library(purrr)
 
 # remove rows where meeting_time is NA to avoid error
 course_data_na_removed <- course_data[!is.na(course_data$meeting_time), ]
@@ -129,6 +131,9 @@ course_recommend <- function(course1, course2, course3, data = course_data_na_re
 }
 
 available_courses <- course_recommend(test_input)
+available_courses
+
+
 
 
 
@@ -136,16 +141,88 @@ available_courses <- course_recommend(test_input)
 
 subject_rec <- function(subject_code) {
 
+  '%notin%' <- Negate('%in%')
+
+  if(subject_code %notin% course_data$course_sub){
+    stop("Not a valid course subject. Please enter a valid course subject.")
+  }
   rec <- dplyr::filter(course_data, course_sub == subject_code) |>
     dplyr::select(course_id, course_name, meeting_time, description)
 
   rec$course_name |>
     stringr::str_replace_all("\n | \n", "")
 
-  return(rec)
+  return(as.data.frame(rec))
 }
 
-subject_rec("AMS")
+subject_rec("AHS")
+test_1 <- subject_rec("SDS")
+test_1
+
+## Function to return meeting time about course code
+
+course_time <- function(course_id){
+  '%notin%' <- Negate('%in%')
+  if(course_id %notin% course_data$course_id){
+    stop("Course ID input is not valid. Please input a valid course Id")
+  }
+  info <- course_data |>
+    filter(course_id == course_id) |>
+    select(meeting_time)
+
+  return(info)
+}
+
+## Function to return course description
+
+course_description <- function(course_id){
+  '%notin%' <- Negate('%in%')
+
+  if(course_id %notin% course_data$course_id){
+    stop("Course ID input is not valid. Pease input a valid course ID.")
+  }
+
+  info <- course_data |>
+    filter(course_id == course_id) |>
+    select(description)
+
+  return(info)
+}
+
+## Function to return course instructor
+
+course_instructor <- function(course_id){
+  '%notin%' <- Negate('%in%')
+
+  if(course_id %notin% course_data$course_id){
+    stop("Course ID input is not valid. Please input a valid course ID.")
+  }
+
+  info <- course_data |>
+    filter(course_id == course_id) |>
+    select(course_instructor)
+
+  return(info)
+}
+
+## Function to return course name
+
+course_name <- function(course_id){
+
+  '%notin%' <- Negate('%in%')
+
+  if(course_id %notin% course_data$course_id){
+    stop("Course ID input is not valid. Please input a valid course ID.")
+  }
+
+  info <- course_data |>
+    filter(course_id == course_id) |>
+    select(course_name)
+
+  return(info)
+}
+
+
 
 
 
