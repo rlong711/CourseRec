@@ -2,6 +2,7 @@ library(usethis)
 library(devtools)
 
 # Basic function:
+# returns course time for user input of course they want to take
 
 course_time <- function(course) {
 
@@ -44,6 +45,7 @@ course_recommend("AFR11701","AFR17501","AFR202aa01")
 #################
 
 # x is the set of classes you're currently taking
+## Within the function, we would have to create this data frame using the user times
 x <- data.frame(
   times = c(
     "Monday/Wednesday | 9:25 AM - 10:40 AM",
@@ -51,12 +53,15 @@ x <- data.frame(
     "Tuesday | 1:20 PM - 4:00 PM"
   )
 )
+
 # y is class you want to see if it will fit in your schedule
+## course_data$meeting_time -- want to select meeting time and then do work on it after
 
 y <- "Tuesday | 1:20 PM - 2:35 PM"
 
 ## Some classes have a location at the end of meeting time string,
 ## This functions will remove them
+## this wouldn't have to be a function within our function, could just be a cleaning step
 remove_locations <- function(x) {
   sub(" \\/ [[:alnum:] ]+$", "", x)
 }
