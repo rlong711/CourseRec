@@ -131,6 +131,8 @@ course_recommend <- function(course1, course2, course3, data = course_data_na_re
 available_courses <- course_recommend(test_input)
 
 
+# approach 1 for specifying department
+
 course_recommend_department <- function(course1, course2, course3, department, data = course_data_na_removed) {
   matching_rows <- grep(paste0("^", department), course_data$course_id, value = TRUE)
 
