@@ -119,9 +119,9 @@ overlap
 
 
 course_recommend_department <- function(course1, course2, course3, department, data = course_data_na_removed) {
-  matching_rows <- grep(paste0("^", department), data$course_id, value = TRUE)
+  matching_rows <- grep(paste0("^", department), course_data$course_id, value = TRUE)
 
-  filtered_data <- data[matching_rows, ]
+  filtered_data <- course_data[matching_rows, ]
 
   available_courses <- course_recommend(course1, course2, course3, data= filtered_data)
 
