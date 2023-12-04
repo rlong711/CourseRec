@@ -1,12 +1,16 @@
 library(usethis)
 library(devtools)
 
-# Basic function:
+# remove rows where meeting_time is NA to avoid error
+course_data_na_removed <- course_data[!is.na(course_data$meeting_time), ]
 
-course_time <- function(course) {
+test_input <- c("AFR11701", "AFR17501", "AFR202aa01")
 
-  for (row in 1:nrow(course_data)) {
-    course_id <- course_data[row, "course_id"]
+## function to return meeting time of inputted course as a chr string
+course_time <- function(course, data = course_data_na_removed) {
+
+  for (row in 1:nrow(data)) {
+    course_id <- data[row, "course_id"]
 
     if (setequal(course_id,course)) {
               course_time <- course_data[row, "meeting_time"]
@@ -16,49 +20,23 @@ course_time <- function(course) {
   return(course_time)
 }
 
-course_time("AFR11701")
+# test_schedule <- purrr::map_chr(test_input, course_time)
 
 
-course_recommend <- function(course1, course2, course3) {
+## function to generate dataframe containing meeting times for 3 courses
+course_schedule <- function(course1, course2, course3, data = course_data_na_removed) {
+  schedule_chr <- purrr::map_chr(test_input, course_time)
 
-  time1 <- course_time(course1)
-  time2 <- course_time(course2)
-  time3 <- course_time(course3)
+  schedule_df <- data.frame(
+    times = schedule_chr
+  )
 
-  available_courses <- vector("character")
-
-  for (row in 1:nrow(course_data)) {
-    course_id <- course_data[row, "course_id"]
-    new_time <- course_data[row, "meeting_time"]
-
-    if (!setequal(new_time,time1) && !setequal(new_time,time2) && !setequal(new_time,time3)) {
-      available_courses <- append(available_courses, course_id)
-    }
-  }
-
-  return (available_courses)
+  return(schedule_df)
 }
 
-course_recommend("AFR11701","AFR17501","AFR202aa01")
+# course_schedule(test_input)
 
-#################
-
-# x is the set of classes you're currently taking
-x <- data.frame(
-  times = c(
-    "Tuesday/Thursday | 8:25 AM - 9:15 AM",
-    "Wednesday/Friday | 1:20 PM - 2:35 PM; Monday | 1:40 PM - 2:55 PM",
-    "Tuesday | 1:20 PM - 4:00 PM"
-  )
-)
-
-# y contains all classes in the dataframe, which you want to see if it will fit in your schedule
-# remove rows where meeting_time is NA to avoid error
-
-course_data_na_removed <- course_data[!is.na(course_data$meeting_time), ]
-
-y <- course_data_na_removed$meeting_time
-
+## function to generate fine grained schedule, input type: dataframe
 fine_grained_schedule <- function(x) {
   ## Split into pieces based on semicolon. This important for classes that have different meeting
   ## times on different days of the week.
@@ -85,6 +63,8 @@ fine_grained_schedule <- function(x) {
   unlist(x, recursive = FALSE)
 }
 
+
+## function to see if two fine grained schedules contain any time conflicts
 find_overlap <- function(a, b) {
   # a and b are class schedules that have been turned into 'fine grained schedules'
   candidate_days <- a[names(b)]
@@ -105,26 +85,50 @@ find_overlap <- function(a, b) {
 
     # overlap means: Does y's start time fall inside the start and end of x?
     # Or, does y's end time fall inside the start and end of x?
+
     overlap <- (x_time[1] <= y_time[1]) & (y_time[1] <= x_time[2]) |
       (x_time[1] <= y_time[2]) & (y_time[2] <= x_time[2])
+
     return(overlap)
   })
-
 }
 
-overlap <- purrr::map(x$times, fine_grained_schedule) |>
-  purrr::map(find_overlap, fine_grained_schedule(y))
 
-overlap
+## course recommender, what the user calls to recommend courses
+course_recommend <- function(course1, course2, course3, data = course_data_na_removed) {
 
+  current_courses_schedule <- course_schedule(course1, course2, course3, data) |>
+    purrr::map(fine_grained_schedule)
 
+  all_courses_schedule <- data$meeting_time |>
+    purrr::map(fine_grained_schedule)
 
+  overlap <- all_courses_schedule |>
+    purrr::map_lgl(\(x) {
+      purrr::map(current_courses_schedule, find_overlap, x) |>
+        unlist() |>
+        any()
+    })
 
+  overlap[is.na(overlap)] <- FALSE
 
+  data$overlap <- overlap
 
+  available_courses <- vector("character")
 
+  for (row in 1:nrow(data)) {
+    course_id <- data[row, "course_id"]
+    overlap <- data[row, "overlap"]
 
+    if (overlap == FALSE) {
+      available_courses <- append(available_courses, course_id)
+    }
+  }
 
+  return(available_courses)
+}
+
+available_courses <- course_recommend(test_input)
 
 
 
