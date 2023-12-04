@@ -61,8 +61,11 @@ fine_grained_schedule <- function(x) {
     return(NULL)
   }
 
+  start_and_end <- strsplit(times, " ") |>
+    unlist() |>
+    matrix(ncol = 2, byrow = TRUE, dimnames = list(NULL, c("start", "end")))
 
-  x <- purrr::map2(weekdays, times, \(w, t) {
+  x <- purrr::map2(weekdays, start_and_end, \(w, t) {
     names(t) <- c("start", "end")
     a <- rep(list(t), length(w))
     names(a) <- w
