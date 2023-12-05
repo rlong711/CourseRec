@@ -132,14 +132,32 @@ available_courses <- course_recommend(test_input)
 available_courses
 
 
-
-# okay back to the old approach
+#'
+#' A function which allows the user to specify a department they would like to take
+#' a class in, e.g. MTH for the Math department
+#'
+#' @param course1 the first course the user is taking
+#' @param course2 the second course the user is taking
+#' @param course3 the third course the user is taking
+#' @param dept the three letter department code which the user wants to search
+#' @return a dataframe of all possible classes within the specified department which have no overlap with the entered classes
+#' @examples
+#' course_rec_dept('AFR11701', 'AFR17501', 'AFR24901', 'MTH')
+#'
+#'
 
 course_rec_dept <- function(course1, course2, course3, dept, data = course_data_na_removed) {
+
+  # making argument inputs into a vector for checking validity of arguments
   courses <- c(course1, course2, course3)
 
   if(!all(courses %in% data$course_id)) {
-    warning("Please reenter courses in correct format")
+    warning("One or more courses does not exist. Please reenter courses in correct format")
+    return(NULL)
+  }
+
+  if (!(dept %in% data$course_dept)) {
+    warning("This department does not exist. Please reenter a valid department")
     return(NULL)
   }
 
@@ -174,7 +192,7 @@ course_rec_dept <- function(course1, course2, course3, dept, data = course_data_
 }
 
 recs <- course_rec_dept('AFR11701', 'AFR17501', 'AFR24901', 'MTH')
-recs
+notrecs <- course_rec_dept('AFR11701', 'AFR17501', 'AFR24901', 'BTS')
 
 
 # Function which allows the user to optionally enter a day that will be excluded from the search (any classes that meet that day
@@ -185,6 +203,16 @@ course_rec_exclude_day_dept <- function(course1, course2, course3, exclude_day, 
 
   if(!all(courses %in% data$course_id)) {
     warning("Please reenter courses in correct format")
+    return(NULL)
+  }
+
+  valid_days <- c("Monday", "Tuesday", "Tuesday", "Thursday", "Friday", "Saturday", "Sunday")
+  if(!is.null(exclude_day) && !(tolower(exclude_day) %in% valid_days)) {
+    warning("Invalid day of the week. Please enter a valid day.")
+  }
+
+  if (!is.null(dept) && !(dept %in% unique(data$course_dept))) {
+    warning("Invalid department. Please enter a valid departmend.")
     return(NULL)
   }
 
@@ -231,6 +259,7 @@ course_rec_exclude_day_dept <- function(course1, course2, course3, exclude_day, 
 # rec_dept_day2 <- course_rec_exclude_day_dept('AFR11701', 'AFR17501', 'AFR24901', 'Monday', 'MTH')
 # rec_dept_3 <- course_rec_exclude_day_dept('AFR11701', 'AFR17501', 'AFR24901', NULL, 'MTH')
 #
+#not_rec_dept_day <- course_rec_exclude_day_dept('AFR11701', 'AFR17501', 'AFR24901', 'MyDay', 'BTS')
 
 
 
