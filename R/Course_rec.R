@@ -161,8 +161,16 @@ course_rec_dept <- function(course1, course2, course3, dept, data = course_data_
   data$overlap <- overlap
 
   available_classes <- data[data$course_dept == dept & !data$course_id %in% courses & !data$overlap, ]
-  available_courses <- available_classes$course_id
-  return(as.data.frame(available_courses))
+
+  result_df <- data.frame(
+    course_id = available_classes$course_id,
+    course_name = available_classes$course_name,
+    course_instructor = available_classes$course_instructor,
+    meeting_time = available_classes$meeting_time,
+    description = available_classes$description
+  )
+
+  return(result_df)
 }
 
 recs <- course_rec_dept('AFR11701', 'AFR17501', 'AFR24901', 'MTH')
