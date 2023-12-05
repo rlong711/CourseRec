@@ -179,6 +179,106 @@ recs
 # function to allow user to specify day of the week they want to meet (e.g. if someone
 # does not want to have classes on friday)
 
+course_rec_exclude_day <- function(course1, course2, course3, exclude_day, data = course_data_na_removed) {
+  courses <- c(course1, course2, course3)
+
+  if(!all(courses %in% data$course_id)) {
+    warning("Please reenter courses in correct format")
+    return(NULL)
+  }
+
+  current_courses_schedule <- course_schedule(course1, course2, course3, data) |>
+    purrr::map(fine_grained_schedule)
+
+  all_courses_schedule <- data$meeting_time |>
+    purrr::map(fine_grained_schedule)
+
+  overlap <- all_courses_schedule |>
+    purrr::map_lgl(\(x) {
+      purrr::map(current_courses_schedule, find_overlap, x) |>
+        unlist() |>
+        any()
+    })
+
+  overlap[is.na(overlap)] <- FALSE
+
+  data$overlap <- overlap
+
+  available_classes <- data[!data$course_id %in% courses & !data$overlap, ]
+
+  if (!is.null(exclude_day)) {
+    exclude_day <- tolower(substr(exclude_day, 1, 3))
+    available_classes <- available_classes[!grepl(exclude_day, available_classes$meeting_time, ignore.case = TRUE), ]
+  }
+
+  result_df <- data.frame(
+    course_id = available_classes$course_id,
+    course_name = available_classes$course_name,
+    course_instructor = available_classes$ course_instructor,
+    meeting_time = available_classes$meeting_time,
+    description = available_classes$description
+  )
+
+  return(result_df)
+}
+
+
+
+recs_exclude_day <- course_rec_exclude_day('AFR11701', 'AFR17501', 'AFR24901', 'Monday')
+head(recs_exclude_day)
+
+# department and day test
+
+course_rec_exclude_day_dept <- function(course1, course2, course3, exclude_day, dept, data = course_data_na_removed) {
+  courses <- c(course1, course2, course3)
+
+  if(!all(courses %in% data$course_id)) {
+    warning("Please reenter courses in correct format")
+    return(NULL)
+  }
+
+  current_courses_schedule <- course_schedule(course1, course2, course3, data) |>
+    purrr::map(fine_grained_schedule)
+
+  all_courses_schedule <- data$meeting_time |>
+    purrr::map(fine_grained_schedule)
+
+  overlap <- all_courses_schedule |>
+    purrr::map_lgl(\(x) {
+      purrr::map(current_courses_schedule, find_overlap, x) |>
+        unlist() |>
+        any()
+    })
+
+  overlap[is.na(overlap)] <- FALSE
+
+  data$overlap <- overlap
+
+  available_classes <- data[!data$course_id %in% courses & !data$overlap, ]
+
+  if (!is.null(dept)) {
+    available_classes <- available_classes[available_classes$course_dept == dept, ]
+  }
+  if (!is.null(exclude_day)) {
+    exclude_day <- tolower(substr(exclude_day, 1, 3))
+    available_classes <- available_classes[!grepl(exclude_day, available_classes$meeting_time, ignore.case = TRUE), ]
+  }
+
+  result_df <- data.frame(
+    course_id = available_classes$course_id,
+    course_name = available_classes$course_name,
+    course_instructor = available_classes$ course_instructor,
+    meeting_time = available_classes$meeting_time,
+    description = available_classes$description
+  )
+
+  return(result_df)
+}
+
+
+rec_dept_day1 <- course_rec_exclude_day_dept('AFR11701', 'AFR17501', 'AFR24901', 'Monday', NULL)
+rec_dept_day2 <- course_rec_exclude_day_dept('AFR11701', 'AFR17501', 'AFR24901', 'Monday', 'MTH')
+
 
 
 
