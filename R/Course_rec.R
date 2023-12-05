@@ -151,16 +151,19 @@ course_rec_dept <- function(course1, course2, course3, dept, data = course_data_
   # making argument inputs into a vector for checking validity of arguments
   courses <- c(course1, course2, course3)
 
+  # checking if course exists before proceeding
   if(!all(courses %in% data$course_id)) {
     warning("One or more courses does not exist. Please reenter courses in correct format")
     return(NULL)
   }
 
+  # checking if entered department exists before proceeding
   if (!(dept %in% data$course_dept)) {
     warning("This department does not exist. Please reenter a valid department")
     return(NULL)
   }
 
+  # creating different schedules to check overlap
   current_courses_schedule <- course_schedule(course1, courses2, courses3, data) |>
     purrr::map(fine_grained_schedule)
 
@@ -178,8 +181,10 @@ course_rec_dept <- function(course1, course2, course3, dept, data = course_data_
 
   data$overlap <- overlap
 
+  # getting the available classes based on the department
   available_classes <- data[data$course_dept == dept & !data$course_id %in% courses & !data$overlap, ]
 
+  #returning results as a dataframe which includes more information for the user
   result_df <- data.frame(
     course_id = available_classes$course_id,
     course_name = available_classes$course_name,
@@ -191,13 +196,27 @@ course_rec_dept <- function(course1, course2, course3, dept, data = course_data_
   return(result_df)
 }
 
-recs <- course_rec_dept('AFR11701', 'AFR17501', 'AFR24901', 'MTH')
-notrecs <- course_rec_dept('AFR11701', 'AFR17501', 'AFR24901', 'BTS')
+# just testing
+#recs <- course_rec_dept('AFR11701', 'AFR17501', 'AFR24901', 'MTH')
+#notrecs <- course_rec_dept('AFR11701', 'AFR17501', 'AFR24901', 'BTS')
 
 
 # Function which allows the user to optionally enter a day that will be excluded from the search (any classes that meet that day
 # will not be returned) as well as optionally specify a department
 
+#'
+#'Function which allows the user to optionally enter a day that will be excluded from the search (any classes that meet that day
+# will not be returned) as well as optionally specify a department.
+#'
+#'@param course1 the first course the user is already taking
+#'@param course2 the second course the user is already taking
+#'@param course3 the third course the user is already taking
+#'@param exclude_day the day of the week the user wants to exclude from the search. any classes which meet on this day will NOT be returned
+#'@param dept he three letter department code which the user wants to search
+#'@return a dataframe containing all the classes the user can take with the corresponding optional criteria
+#'@examples
+#'course_rec_exclude_day_dept('AFR11701', 'AFR17501', 'AFR24901', 'Monday', 'MTH')
+#'
 course_rec_exclude_day_dept <- function(course1, course2, course3, exclude_day, dept, data = course_data_na_removed) {
   courses <- c(course1, course2, course3)
 
