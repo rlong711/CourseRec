@@ -218,23 +218,28 @@ course_rec_dept <- function(course1, course2, course3, dept, data = course_data_
 #'course_rec_exclude_day_dept('AFR11701', 'AFR17501', 'AFR24901', 'Monday', 'MTH')
 #'
 course_rec_exclude_day_dept <- function(course1, course2, course3, exclude_day, dept, data = course_data_na_removed) {
+  # for validation of course existence
   courses <- c(course1, course2, course3)
 
+  #verifying courses exist
   if(!all(courses %in% data$course_id)) {
     warning("Please reenter courses in correct format")
     return(NULL)
   }
 
+  #verifying entered day argument is valid
   valid_days <- c("Monday", "Tuesday", "Tuesday", "Thursday", "Friday", "Saturday", "Sunday")
   if(!is.null(exclude_day) && !(tolower(exclude_day) %in% valid_days)) {
     warning("Invalid day of the week. Please enter a valid day.")
   }
 
+  #verifying department is valid
   if (!is.null(dept) && !(dept %in% unique(data$course_dept))) {
     warning("Invalid department. Please enter a valid departmend.")
     return(NULL)
   }
 
+  #schedules for overlap checking
   current_courses_schedule <- course_schedule(course1, course2, course3, data) |>
     purrr::map(fine_grained_schedule)
 
@@ -254,14 +259,18 @@ course_rec_exclude_day_dept <- function(course1, course2, course3, exclude_day, 
 
   available_classes <- data[!data$course_id %in% courses & !data$overlap, ]
 
+  # finding classes within department if department field is entered and valid
   if (!is.null(dept)) {
     available_classes <- available_classes[available_classes$course_dept == dept, ]
   }
+
+  # finding classes excluding day if day field is entered and valid
   if (!is.null(exclude_day)) {
     exclude_day <- tolower(substr(exclude_day, 1, 3))
     available_classes <- available_classes[!grepl(exclude_day, available_classes$meeting_time, ignore.case = TRUE), ]
   }
 
+  #returning resulting data frame with proper criteria filters and additional information for user
   result_df <- data.frame(
     course_id = available_classes$course_id,
     course_name = available_classes$course_name,
