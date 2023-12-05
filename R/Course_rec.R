@@ -132,20 +132,6 @@ available_courses <- course_recommend(test_input)
 available_courses
 
 
-# approach 1 for specifying department
-
-course_recommend_department <- function(course1, course2, course3, department, data = course_data_na_removed) {
-  matching_rows <- grep(paste0("^", department), data$course_id, value = TRUE)
-
-  filtered_data <- data[matching_rows, ]
-
-  available_courses <- course_recommend(course1, course2, course3, data= filtered_data)
-
-  return(available_courses)
-}
-
-course_recommend_department('AFR11701', 'AFR17501', 'AFR24901', 'MTH')
-
 
 # okay back to the old approach
 
@@ -181,5 +167,12 @@ course_rec_dept <- function(course1, course2, course3, dept, data = course_data_
 
 recs <- course_rec_dept('AFR11701', 'AFR17501', 'AFR24901', 'MTH')
 recs
+
+# function to allow user to specify day of the week they want to meet (e.g. if someone
+# does not want to have classes on friday)
+
+
+
+
 
 
