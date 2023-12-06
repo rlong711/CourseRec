@@ -1,5 +1,102 @@
-# remove rows where meeting_time is NA to avoid error
-course_data_na_removed <- course_data[!is.na(course_data$meeting_time), ]
+create_url <- function(year, semester) {
+
+  semester <- toupper(semester)
+
+  if (semester == "FALL") {
+    year <- as.character(year + 1)
+    semester <- "01"
+  } else if (semester == "SPRING") {
+    year <- as.character(year)
+    semester <- "03"
+  } else if (semester == "INTERTERM") {
+    year <- as.character(year)
+    semester <- "02"
+  }
+
+  url <- paste("https://www.smith.edu/apps/course_search/?term=",year,semester,"&dept=&instructor=&instr_method=&credits=&course_number=&course_keyword=&csrf_token=IjA4YjU1NzY1MWVjZGM1Y2I4Zjc5YTI2NGI3ZTRjMzVhMTRhNjI0Y2Yi.ZW_GmQ.FNEfr0kGEekCEmogkG6zuQzLHb8&op=Submit&form_id=campus_course_search_basic_search_form",
+               sep ="")
+}
+
+remove_locations <- function(x) {
+  z <- mgsub(pattern = c("Sabin-Reed ", "Ainsworth 304; ", "Ainsworth Gym; ", "[0-9]; "),
+             replacement = c("SR ", "AG ", "AG ", " "), string = x)
+  sub(" \\/ [[:alnum:] ]+$", "", z)
+}
+
+scrap_course_data <- function(year, semester) {
+
+  url <- create_url(year, semester)
+
+  courses <- read_html(url)
+
+  # intializing a data frame
+  course_data <- data.frame(
+    course_num = character(),
+    course_dept = character(),
+    course_sub = character(),
+    course_section = character(),
+    course_name = character(),
+    course_instructor = character(),
+    course_status = character(),
+    credits = character(),
+    max_enroll = character(),
+    section_enroll = character(),
+    waitlist = character(),
+    reserved = character(),
+    meeting_time = character(),
+    description = character(),
+    stringsAsFactors = FALSE
+
+  )
+
+  course_elements <- courses |>
+    html_elements("article.course.campus-course-search-result")
+
+  for (course_element in course_elements) {
+    course_num <- html_text(html_node(course_element, ".course-course-num"))
+    course_dept <- html_text(html_node(course_element, ".course-dept"))
+    course_sub <- html_text(html_node(course_element, ".course-course-subject"))
+    course_section <- html_text(html_node(course_element, ".course-section-num"))
+    course_name <- html_text(html_node(course_element, ".course-section-title a"))
+    course_instructor <- html_text(html_node(course_element, ".course-section-instructor"))
+    course_status <- html_text(html_node(course_element, ".course-section-status"))
+
+    credits <- html_text(html_node(course_element, "span.course-result-detail.course-credits")) |> substring(10, )
+    max_enroll <- html_text(html_node(course_element, "span.course-result-detail.course-enrollment_max")) |> substring(17,)
+    section_enroll <- html_text(html_node(course_element, "span.course-result-detail.course-enrollment_tot")) |> substring(21, )
+    waitlist <- html_text(html_node(course_element, "span.course-result-detail.course-enrollment-waitlist")) |> substring(18, )
+    reserved <- html_text(html_node(course_element, "span.course-result-detail.course-reserved-ind")) |> substring(17, )
+    meeting_time <- html_text(html_node(course_element, "span.course-result-detail.course-meeting")) |> substring(16, )
+    description <- html_text(html_node(course_element, "span.course-result-detail.course-description p"))
+
+    course_data <- course_data |>
+      add_row(
+        course_num = course_num,
+        course_sub = course_sub,
+        course_dept = course_dept,
+        course_section = course_section,
+        course_name = course_name,
+        course_instructor = course_instructor,
+        course_status = course_status,
+        credits = credits,
+        max_enroll = max_enroll,
+        section_enroll = section_enroll,
+        waitlist = waitlist,
+        reserved = reserved,
+        meeting_time = meeting_time,
+        description = description
+      )
+  }
+
+  course_data$course_id = paste(course_data$course_sub, course_data$course_num, course_data$course_section, sep = "")
+
+  course_data$meeting_time <- remove_locations(course_data$meeting_time)
+
+  return(course_data)
+}
+
+
+
 
 #' @title Generate the meeting time of a course
 #'
@@ -8,12 +105,11 @@ course_data_na_removed <- course_data[!is.na(course_data$meeting_time), ]
 #' if the course ID exists in courses data set.
 #'
 #' @param course A character vector identifying a course ID.
-#' @param data A data set containing the entire course schedule. The default data set contains the course schedule of
-#' all spring 2024 courses at Smith College.
+#' @param data A data set containing the entire course schedule.
 #' @return A character vector of the meeting time of the course.
 #'
 #' @export
-course_time <- function(course, data = course_data_na_removed) {
+course_time <- function(course, data) {
 
   for (row in 1:nrow(data)) {
     course_id <- data[row, "course_id"]
@@ -32,14 +128,16 @@ course_time <- function(course, data = course_data_na_removed) {
 #' @description
 #' Given three character vectors of course IDs, this function returns their meeting times as a column in a data frame
 #'
-#' @param course1 the first course
-#' @param course2 the second course
-#' @param course3 the third course
-#' @param data A data set containing entire course schedule. The default data set contains course schedule of
-#' all spring 2024 courses at Smith College.
+#' @param courses a character vector of length 3 containing the course IDs of all 3 courses the user plans to take.
+#' @param data A data set containing entire course schedule.
 #' @return A data frame containing one column, which is a character vector of three meeting times
-course_schedule <- function(course1, course2, course3, data = course_data_na_removed) {
-  schedule_chr <- purrr::map_chr(test_input, course_time)
+course_schedule <- function(courses, data) {
+
+  if (length(courses)!=3) {
+    stop("You must have and only have three courses.")
+  }
+
+  schedule_chr <- purrr::map_chr(courses, course_time, data)
 
   schedule_df <- data.frame(
     times = schedule_chr
@@ -126,19 +224,19 @@ find_overlap <- function(a, b) {
 #' Given three courses the user plans to take,
 #' this functions returns a character vector of all courses available to the user.
 #'
-#' @param course1 the first course the user plans to take
-#' @param course2 the second course the user plans to take
-#' @param course3 the third course the user plans to take
-#' @param data Data set containing entire course schedule. The default data set contains course schedule of
-#' all spring 2024 courses at Smith College.
+#' @param courses a character vector of length 3 containing the course IDs of all 3 courses the user plans to take.
+#' @param data Data set containing entire course schedule.
 #' @return A character vector of the course IDs of all available courses, meaning courses that do not have a
 #' time conflict with what the user's three courses.
 #' @importFrom purrr map
 #'
 #' @export
-course_recommend <- function(course1, course2, course3, data = course_data_na_removed) {
+course_recommend <- function(courses, data = course_data) {
 
-  current_courses_schedule <- course_schedule(course1, course2, course3, data) |>
+  # remove rows where meeting_time is NA to avoid error
+  data <- data[!is.na(data$meeting_time), ]
+
+  current_courses_schedule <- course_schedule(courses, data) |>
     purrr::map(fine_grained_schedule)
 
   all_courses_schedule <- data$meeting_time |>

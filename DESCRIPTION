@@ -17,5 +17,8 @@ Depends:
 LazyData: true
 Imports: 
     dplyr,
+    mgsub,
     purrr,
+    rvest,
+    stringr,
     testthat
