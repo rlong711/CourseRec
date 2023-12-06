@@ -118,7 +118,7 @@ course_time <- function(course, data) {
     course_id <- data[row, "course_id"]
 
     if (setequal(course_id,course)) {
-      course_time <- course_data[row, "meeting_time"]
+      course_time <- data[row, "meeting_time"]
     }
   }
 
@@ -140,7 +140,7 @@ course_schedule <- function(courses, data) {
     stop("You must have and only have three courses.")
   }
 
-  schedule_chr <- purrr::map(courses, course_time, data)
+  schedule_chr <- purrr::map_chr(courses, course_time, data)
 
   schedule_df <- data.frame(
     times = schedule_chr
