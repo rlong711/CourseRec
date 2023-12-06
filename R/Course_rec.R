@@ -119,7 +119,22 @@ find_overlap <- function(a, b) {
   })
 }
 
-## course recommender, what the user calls to recommend courses
+#' @title Generate all available courses
+#'
+#' @description
+#' Given three courses the user plans to take,
+#' this functions returns a character vector of all courses available to the user.
+#'
+#' @param course1 the first course the user plans to take
+#' @param course2 the second course the user plans to take
+#' @param course3 the third course the user plans to take
+#' @param data Data set containing entire course schedule. The default data set contains course schedule of
+#' all spring 2024 courses at Smith College.
+#' @return A character vector of the course IDs of all available courses, meaning courses that do not have a
+#' time conflict with what the user's three courses.
+#' @importFrom purrr map
+#'
+#' @export
 course_recommend <- function(course1, course2, course3, data = course_data_na_removed) {
 
   current_courses_schedule <- course_schedule(course1, course2, course3, data) |>
@@ -152,9 +167,6 @@ course_recommend <- function(course1, course2, course3, data = course_data_na_re
 
   return(available_courses)
 }
-
-available_courses <- course_recommend(test_input)
-available_courses
 
 
 #'
