@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(CourseRec)
+
 ```
 
 The 'CourseRec' package provides users with the ability to input 3 courses which they want to take and will return courses from the Smith College catalog ('https://www.smith.edu/apps/course_search/') which are available based on different optional criteria. It includes a dataset which provides information about all course offerings, the instructors, departments, descriptions, and other relevant details. It also allows users to gather course offerings for a different semester and scrape the data they desire. 
@@ -28,7 +29,7 @@ Given three user input courses -- following the format of three letter course su
 library(CourseRec)
 
 # finding all classes that could possibly satisfy a 4th class 
-classes <- course_recommend('AFR11701', 'AFR17501', 'AFR24901')
+classes <- course_recommend(c('AFR11701', 'AFR17501', 'AFR24901'), course_data)
 classes 
 ```
 
@@ -40,7 +41,7 @@ Given three user input course id's as well as a user specified three letter depa
 library(CourseRec)
 
 #finding all classes that can be taken within the math department 
-classes <- course_rec_dept('AFR11701', 'AFR17501', 'AFR24901', 'MTH')
+classes <- course_rec_dept(c('AFR11701', 'AFR17501', 'AFR24901'), 'MTH', course_data)
 classes
 ```
 
@@ -52,7 +53,7 @@ Given three user input course id's and optional department code as well as an op
 library(CourseRec)
 
 #finding all classes that can be taken within the math department and that don't meet on Friday 
-classes <- course_rec_exclude_day_dept('AFR11701', 'AFR17501', 'AFR24901', 'Friday', 'MTH')
+classes <- course_rec_exclude_day_dept(c('AFR11701', 'AFR17501', 'AFR24901'), 'Friday', 'MTH', course_data)
 classes
 ```
 

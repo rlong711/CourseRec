@@ -332,7 +332,7 @@ course_rec_dept <- function(courses, dept, data) {
   #
   # return(available_courses)
   # # to return data frame
-  available_courses <- data[data$overlap == FALSE & data$course_dept == dept, ]
+  available_classes <- data[data$overlap == FALSE & data$course_dept == dept, ]
   # #returning results as a dataframe which includes more information for the user
   result_df <- data.frame(
     course_id = available_classes$course_id,
