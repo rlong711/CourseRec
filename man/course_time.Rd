@@ -4,13 +4,12 @@
 \alias{course_time}
 \title{Generate the meeting time of a course}
 \usage{
-course_time(course, data = course_data_na_removed)
+course_time(course, data)
 }
 \arguments{
 \item{course}{A character vector identifying a course ID.}
 
-\item{data}{A data set containing the entire course schedule. The default data set contains the course schedule of
-all spring 2024 courses at Smith College.}
+\item{data}{A data set containing the entire course schedule.}
 }
 \value{
 A character vector of the meeting time of the course.

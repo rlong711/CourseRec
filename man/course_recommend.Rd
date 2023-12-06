@@ -4,17 +4,12 @@
 \alias{course_recommend}
 \title{Generate all available courses}
 \usage{
-course_recommend(course1, course2, course3, data = course_data_na_removed)
+course_recommend(courses, data)
 }
 \arguments{
-\item{course1}{the first course the user plans to take}
+\item{courses}{a character vector of length 3 containing the course IDs of all 3 courses the user plans to take.}
 
-\item{course2}{the second course the user plans to take}
-
-\item{course3}{the third course the user plans to take}
-
-\item{data}{Data set containing entire course schedule. The default data set contains course schedule of
-all spring 2024 courses at Smith College.}
+\item{data}{Data set containing entire course schedule.}
 }
 \value{
 A character vector of the course IDs of all available courses, meaning courses that do not have a

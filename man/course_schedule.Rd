@@ -4,17 +4,12 @@
 \alias{course_schedule}
 \title{Generate a course schedule for 3 courses}
 \usage{
-course_schedule(course1, course2, course3, data = course_data_na_removed)
+course_schedule(courses, data)
 }
 \arguments{
-\item{course1}{the first course}
+\item{courses}{a character vector of length 3 containing the course IDs of all 3 courses the user plans to take.}
 
-\item{course2}{the second course}
-
-\item{course3}{the third course}
-
-\item{data}{A data set containing entire course schedule. The default data set contains course schedule of
-all spring 2024 courses at Smith College.}
+\item{data}{A data set containing entire course schedule.}
 }
 \value{
 A data frame containing one column, which is a character vector of three meeting times
