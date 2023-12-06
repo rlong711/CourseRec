@@ -449,4 +449,85 @@ course_rec_exclude_day_dept <- function(courses, exclude_day, dept, data) {
 
 
 
+#' Gives reccomendation for user who wants to take a course with a specific course subject code.
+#'
+#' Given a subject code, this returns all courses with that subject code offered at Smith college.
+#'
+#' @param subject_code the course subject the user wants to find classes offered in.
+#'
+#' @return All of the courses offered with the given course subject code.
+#'
+#' @importFrom dplyr filter
+#' @importFrom dplyr select
+#' @importFrom stringr str_replace_all
+#'
+#' @export
+subject_rec <- function(subject_code) {
+
+  '%notin%' <- Negate('%in%')
+
+  if(subject_code %notin% course_data$course_sub){
+    stop("Not a valid course subject. Please enter a valid course subject.")
+  }
+  rec <- dplyr::filter(course_data, course_sub == subject_code) |>
+    dplyr::select(course_id, course_name, meeting_time, description)
+
+  rec$course_name |>
+    stringr::str_replace_all("\n | \n", "")
+
+  return(as.data.frame(rec))
+}
+
+
+#' Meeting times for courses offered
+#'
+#' Given a course_id, the function returns the meeting time for that specific course.
+#'
+#' @param course_id The specific course id for the course the user wants to know the meeting time of.
+#'
+#' @return The meeting time that corresponds to the given course id.
+#'
+#' @importFrom dplyr filter
+#' @importFrom dplyr select
+#'
+#' @export
+course_time <- function(course_id){
+  '%notin%' <- Negate('%in%')
+  if(course_id %notin% course_data$course_id){
+    stop("Course ID input is not valid. Please input a valid course Id")
+  }
+  info <- course_data |>
+    filter(course_id == course_id) |>
+    select(meeting_time)
+
+  return(info)
+}
+
+#' Description of desired course.
+#'
+#' Given a specific course id, this function returns a description of that course.
+#'
+#' @param course_id The specific course id
+#'
+#' @return The description of the course that refers to the course id input.
+#' * description
+#'
+#' @importFrom dplyr filter
+#' @importFrom dplyr select
+#'
+#' @export
+course_description <- function(course_id){
+  '%notin%' <- Negate('%in%')
+
+  if(course_id %notin% course_data$course_id){
+    stop("Course ID input is not valid. Pease input a valid course ID.")
+  }
+
+  info <- course_data |>
+    filter(course_id == course_id) |>
+    select(description)
+
+  return(info)
+}
+
 
