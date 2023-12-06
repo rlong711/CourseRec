@@ -1,6 +1,3 @@
-library(usethis)
-library(devtools)
-
 create_url <- function(year, semester) {
 
   semester <- toupper(semester)
@@ -118,7 +115,7 @@ course_time <- function(course, data) {
     course_id <- data[row, "course_id"]
 
     if (setequal(course_id,course)) {
-      course_time <- data[row, "meeting_time"]
+      course_time <- course_data[row, "meeting_time"]
     }
   }
 
@@ -234,7 +231,7 @@ find_overlap <- function(a, b) {
 #' @importFrom purrr map
 #'
 #' @export
-course_recommend <- function(courses, data) {
+course_recommend <- function(courses, data = course_data) {
 
   # remove rows where meeting_time is NA to avoid error
   data <- data[!is.na(data$meeting_time), ]
@@ -269,6 +266,7 @@ course_recommend <- function(courses, data) {
 
   return(available_courses)
 }
+
 
 #'
 #' A function which allows the user to specify a department they would like to take
