@@ -234,7 +234,7 @@ find_overlap <- function(a, b) {
 #' @importFrom purrr map
 #'
 #' @export
-course_recommend <- function(courses, data = course_data) {
+course_recommend <- function(courses, data) {
 
   # remove rows where meeting_time is NA to avoid error
   data <- data[!is.na(data$meeting_time), ]
