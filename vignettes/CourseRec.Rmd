@@ -58,7 +58,7 @@ classes
 
 ## Course Data 
 
-The metadata of all courses currently offered by Smith College is scraped from the online course catalog and aggregated into the 'course_data' dat set
+The metadata of all courses currently offered by Smith College is scraped from the online course catalog and aggregated into the 'course_data' data set
 
 ```{r}
 head(course_data)
