@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 library(CourseRec)
 ```
 
-The 'CourseRec' package provides users with the ability to input 3 courses which they want to take and will return courses from the Smith College catalog ('https://www.smith.edu/apps/course_search/') which are available based on different optional criteria. It includes a dataset which provides information about all course offerings, the instructors, departments, descriptions, and other relevant details. 
+The 'CourseRec' package provides users with the ability to input 3 courses which they want to take and will return courses from the Smith College catalog ('https://www.smith.edu/apps/course_search/') which are available based on different optional criteria. It includes a dataset which provides information about all course offerings, the instructors, departments, descriptions, and other relevant details. It also allows users to gather course offerings for a different semester and scrape the data they desire. 
 
 ## Finding possible courses based solely on time
 
