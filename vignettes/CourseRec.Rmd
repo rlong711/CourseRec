@@ -38,11 +38,10 @@ classes
 Given three user input course id's as well as a user specified three letter department code (see course_data data set for possible departments), 'course_rec_dept()' checks for overlapping times and returns only the classes within the specific department input during the function call that the user could take. This function returns a data frame containing the course id's, the instructor, the meeting time, the full course name, and the description of the class. 
 
 ```{r example}
-library(CourseRec)
 
 #finding all classes that can be taken within the math department 
-classes <- course_rec_dept(c('AFR11701', 'AFR17501', 'AFR24901'), 'MTH', course_data)
-classes
+classes_dept <- course_rec_dept(c('AFR11701', 'AFR17501', 'AFR24901'), 'MTH', course_data)
+classes_dept
 ```
 
 ## Finding possible courses basd on time, department and/or excluding a certain day of the week
@@ -50,8 +49,6 @@ classes
 Given three user input course id's and optional department code as well as an optional day of the week argument, 'course_rec_exclude_day_dept()' returns a data frame of all classes which meet the criteria of time, department, and day of the week to be excluded from the search. In other words, while both the department and day of the week arguments are optional, if the user opts to enter an argument for excluded day, classes which meet on that day will not be returned, and user can further specify department, or choose to specify only one criteria of either department or day.
 
 ```{r example}
-library(CourseRec)
-
 #finding all classes that can be taken within the math department and that don't meet on Friday 
 classes <- course_rec_exclude_day_dept(c('AFR11701', 'AFR17501', 'AFR24901'), 'Friday', 'MTH', course_data)
 classes

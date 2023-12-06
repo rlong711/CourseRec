@@ -140,7 +140,7 @@ course_schedule <- function(courses, data) {
     stop("You must have and only have three courses.")
   }
 
-  schedule_chr <- purrr::map_chr(courses, course_time, data)
+  schedule_chr <- purrr::map(courses, course_time, data)
 
   schedule_df <- data.frame(
     times = schedule_chr
@@ -318,22 +318,9 @@ course_rec_dept <- function(courses, dept, data) {
 
   data$overlap <- overlap
 
-  # getting the available classes based on the department
-  # available_courses <- vector("character")
-  # for (row in 1:nrow(data)) {
-  #   course_id <- data[row, "course_id"]
-  #   overlap <- data[row, "overlap"]
-  #   course_dept <- data[row, "course_dept"]
-  #
-  #   if (overlap == FALSE && course_dept == dept) {
-  #     available_courses <- append(available_courses, course_id)
-  #   }
-  # }
-  #
-  # return(available_courses)
-  # # to return data frame
   available_classes <- data[data$overlap == FALSE & data$course_dept == dept, ]
-  # #returning results as a dataframe which includes more information for the user
+  # #returning results as a dataf rame which includes more information for the user
+
   result_df <- data.frame(
     course_id = available_classes$course_id,
     course_name = available_classes$course_name,
@@ -341,7 +328,6 @@ course_rec_dept <- function(courses, dept, data) {
     meeting_time = available_classes$meeting_time,
     description = available_classes$description
   )
-
   return(result_df)
 }
 
