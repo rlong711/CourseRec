@@ -314,7 +314,7 @@ course_recommend <- function(courses, data) {
 #'
 #'@export
 
-course_rec_dept <- function(courses, dept, data) {
+course_recommend_dept <- function(courses, dept, data) {
 
   # remove rows where meeting_time is NA to avoid error
   data <- data[!is.na(data$meeting_time), ]
@@ -379,7 +379,7 @@ course_rec_dept <- function(courses, dept, data) {
 #'@examples
 #'course_rec_exclude_day_dept(c('AFR11701', 'AFR17501', 'AFR24901'), 'Monday', 'MTH', course_data)
 #'
-course_rec_exclude_day_dept <- function(courses, exclude_day, dept, data) {
+course_recommend_exlude_day <- function(courses, exclude_day, dept, data) {
 
   data <- data[!is.na(data$meeting_time), ]
 
