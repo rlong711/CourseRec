@@ -270,8 +270,6 @@ course_recommend <- function(courses, data) {
   return(available_courses)
 }
 
-course_recommend(c('AFR11701', 'AFR17501', 'AFR24901'))
-
 #'
 #' A function which allows the user to specify a department they would like to take
 #' a class in, e.g. MTH for the Math department
@@ -347,9 +345,6 @@ course_rec_dept <- function(courses, dept, data) {
   return(result_df)
 }
 
-# just testing
-recs <- course_rec_dept(c('AFR11701', 'AFR17501', 'AFR24901'), 'MTH', course_data)
-#notrecs <- course_rec_dept('AFR11701', 'AFR17501', 'AFR24901', 'BTS')
 
 
 # Function which allows the user to optionally enter a day that will be excluded from the search (any classes that meet that day
@@ -434,14 +429,6 @@ course_rec_exclude_day_dept <- function(courses, exclude_day, dept, data) {
 
   return(result_df)
 }
-
-# # Testing!
-# rec_dept_day1 <- course_rec_exclude_day_dept('AFR11701', 'AFR17501', 'AFR24901', 'Monday', NULL)
- rec_dept_day2 <- course_rec_exclude_day_dept(c('AFR11701', 'AFR17501', 'AFR24901'), 'Monday', 'MTH', course_data)
-# rec_dept_3 <- course_rec_exclude_day_dept('AFR11701', 'AFR17501', 'AFR24901', NULL, 'MTH')
-#
-#not_rec_dept_day <- course_rec_exclude_day_dept('AFR11701', 'AFR17501', 'AFR24901', 'MyDay', 'BTS')
-
 
 
 
