@@ -491,7 +491,7 @@ subject_rec <- function(subject_code) {
 #' @importFrom dplyr select
 #'
 #' @export
-course_time <- function(course_id){
+course_meeting_time <- function(course_id){
   '%notin%' <- Negate('%in%')
   if(course_id %notin% course_data$course_id){
     stop("Course ID input is not valid. Please input a valid course Id")
