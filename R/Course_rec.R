@@ -1,3 +1,13 @@
+#' @title Create url to Smith course search website of a single semester
+#'
+#' @description
+#' Given the year and semester, this funciton creates a url to course search website of Smith College of that
+#' semester
+#'
+#' @param year A scalar numeric vector indicating the year
+#' @param semester A character vector indicating whether the semester is the fall, spring or interterm semester
+#' @return A character vector containing a url to the course search website of the indicated semester
+#' @export
 create_url <- function(year, semester) {
 
   semester <- toupper(semester)
@@ -15,19 +25,41 @@ create_url <- function(year, semester) {
 
   url <- paste("https://www.smith.edu/apps/course_search/?term=",year,semester,"&dept=&instructor=&instr_method=&credits=&course_number=&course_keyword=&csrf_token=IjA4YjU1NzY1MWVjZGM1Y2I4Zjc5YTI2NGI3ZTRjMzVhMTRhNjI0Y2Yi.ZW_GmQ.FNEfr0kGEekCEmogkG6zuQzLHb8&op=Submit&form_id=campus_course_search_basic_search_form",
                sep ="")
+
+  return(url)
 }
 
+
+#' @title Clean meeting_time column
+#'
+#' @description
+#' Removes locations from the meeting time column of course data data set
+#'
+#' @param x the meeting time column from course data set
+#' @return cleaned meeting time column only containing meeting time
 remove_locations <- function(x) {
   z <- mgsub(pattern = c("Sabin-Reed ", "Ainsworth 304; ", "Ainsworth Gym; ", "[0-9]; "),
              replacement = c("SR ", "AG ", "AG ", " "), string = x)
   sub(" \\/ [[:alnum:] ]+$", "", z)
 }
 
+
+#' @title Scrap course data from Smith College course search website
+#'
+#' @description
+#' Given the year and semester, creates a data set containing info from all courses in that semester from website
+#'
+#' @param year A scalar numeric vector indicating the year
+#' @param semester A character vector indicating whether the semester is the fall, spring or interterm semester
+#' @return data set
+#'
+#' @importFrom rvest read_html
+#' @importFrom rvest h
 scrap_course_data <- function(year, semester) {
 
   url <- create_url(year, semester)
 
-  courses <- read_html(url)
+  courses <- rvest::read_html(url)
 
   # intializing a data frame
   course_data <- data.frame(
@@ -50,7 +82,7 @@ scrap_course_data <- function(year, semester) {
   )
 
   course_elements <- courses |>
-    html_elements("article.course.campus-course-search-result")
+    rvest::html_elements("article.course.campus-course-search-result")
 
   for (course_element in course_elements) {
     course_num <- html_text(html_node(course_element, ".course-course-num"))
@@ -115,7 +147,7 @@ course_time <- function(course, data) {
     course_id <- data[row, "course_id"]
 
     if (setequal(course_id,course)) {
-              course_time <- course_data[row, "meeting_time"]
+              course_time <- data[row, "meeting_time"]
             }
   }
 
@@ -189,6 +221,8 @@ fine_grained_schedule <- function(x) {
 #' @param a the first fine grained schedule
 #' @param b the second fine grained schedule
 #' @return A logical vector. TRUE if there is a time conflict, FALSE if not.
+#'
+#' @importFrom lubridate hm
 find_overlap <- function(a, b) {
 
   candidate_days <- a[names(b)]
@@ -231,7 +265,7 @@ find_overlap <- function(a, b) {
 #' @importFrom purrr map
 #'
 #' @export
-course_recommend <- function(courses, data = course_data) {
+course_recommend <- function(courses, data) {
 
   # remove rows where meeting_time is NA to avoid error
   data <- data[!is.na(data$meeting_time), ]

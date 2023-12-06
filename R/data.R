@@ -10,7 +10,7 @@
 #'  \item{course_instructor}{Instructor of the course}
 #'  \item{course_status}{Status of the course (i.e. if it is open for registration)}
 #'  \item{credits}{Credits of the course}
-#'  \item{transcript}{Transcription of the text in the comic}
+#'  \item{section_enroll}{Current enrollment of course section}
 #'  \item{max_enroll}{Maximun number of enrollment}
 #'  \item{waitlist}{Current number of people on the waitlist}
 #'  \item{reserved}{If there are reserved seats in this course}

@@ -2,4 +2,6 @@
 
 export(course_recommend)
 export(course_time)
+export(create_url)
+importFrom(lubridate,hm)
 importFrom(purrr,map)
