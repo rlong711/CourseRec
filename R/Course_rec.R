@@ -493,13 +493,13 @@ subject_rec <- function(subject_code) {
 #' @importFrom dplyr select
 #'
 #' @export
-course_meeting_time <- function(course_id){
+course_meeting_time <- function(course, data){
   '%notin%' <- Negate('%in%')
-  if(course_id %notin% course_data$course_id){
+  if(course %notin% data$course_id){
     stop("Course ID input is not valid. Please input a valid course Id")
   }
-  info <- course_data |>
-    filter(course_id == course_id) |>
+  info <- data |>
+    filter(data$course_id == course) |>
     select(meeting_time)
 
   return(info)
@@ -518,15 +518,15 @@ course_meeting_time <- function(course_id){
 #' @importFrom dplyr select
 #'
 #' @export
-course_description <- function(course_id){
+course_description <- function(course, data){
   '%notin%' <- Negate('%in%')
 
-  if(course_id %notin% course_data$course_id){
+  if(course %notin% data$course_id){
     stop("Course ID input is not valid. Pease input a valid course ID.")
   }
 
-  info <- course_data |>
-    filter(course_id == course_id) |>
+  info <- data |>
+    filter(data$course_id == course) |>
     select(description)
 
   return(info)

@@ -75,7 +75,7 @@ Given a course id, the 'course_meeting_time()' function returns just the meeting
 ```{r}
 # finding the meeting time of 'SDS270'
 library(dplyr)
-course_meeting_time('SDS27001')
+course_meeting_time('SDS27001', course_data)
 
 ```
 ## Getting the description of a specific course
@@ -83,7 +83,7 @@ course_meeting_time('SDS27001')
 Given the course id, the 'course_description()' function will return the description of the course. Similar to 'course_meeting_time(),' the 'course_description()' function is useful for exploring courses generally. 
 ```{r}
 # getting the description of SDS270
-course_description('SDS27001')
+course_description('SDS27001', course_data)
 ```
 
 ## Course Data 
