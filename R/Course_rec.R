@@ -7,7 +7,6 @@
 #' @param year A scalar numeric vector indicating the year
 #' @param semester A character vector indicating whether the semester is the fall, spring or interterm semester
 #' @return A character vector containing a url to the course search website of the indicated semester
-#' @export
 create_url <- function(year, semester) {
 
   semester <- toupper(semester)
@@ -54,7 +53,8 @@ remove_locations <- function(x) {
 #' @return data set
 #'
 #' @importFrom rvest read_html
-#' @importFrom rvest h
+#' @importFrom rvest html_elements
+#' @export
 scrap_course_data <- function(year, semester) {
 
   url <- create_url(year, semester)
