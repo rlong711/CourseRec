@@ -305,6 +305,7 @@ course_recommend <- function(courses, data) {
 #' A function which allows the user to specify a department they would like to take
 #' a class in, e.g. MTH for the Math department
 #'
+#' @importFrom purrr map
 #' @param courses a vector of three course ids
 #' @param dept the three letter department code which the user wants to search
 #' @param data the data set of course offerings to be searched
@@ -371,6 +372,7 @@ course_recommend_dept <- function(courses, dept, data) {
 #'Function which allows the user to optionally enter a day that will be excluded from the search (any classes that meet that day
 # will not be returned) as well as optionally specify a department.
 #'
+#'@importFrom purrr map
 #'@param courses a character vector of three course ids
 #'@param exclude_day the day of the week the user wants to exclude from the search. any classes which meet on this day will NOT be returned
 #'@param dept the three letter department code which the user wants to search
