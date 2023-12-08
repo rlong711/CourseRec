@@ -1,8 +1,8 @@
 ---
-title: "CourseRec"
+title: "CourseRec Overview"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{CourseRec}
+  %\VignetteIndexEntry{CourseRec Overview}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -51,7 +51,7 @@ Given three user input course id's and optional department code as well as an op
 
 ```{r example}
 #finding all classes that can be taken within the math department and that don't meet on Friday 
-classes_day_dept <- course_recommend_exlude_day(c('AFR11701', 'AFR17501', 'AFR24901'), 'Friday', 'MTH', course_data)
+classes_day_dept <- course_recommend_exclude_day(c('AFR11701', 'AFR17501', 'AFR24901'), 'Friday', 'MTH', course_data)
 classes_day_dept
 ```
 
@@ -128,6 +128,8 @@ The 'CourseRec' package also provides users the opportunity to scrape their own 
 ```{r}
 scrap_course_data(2022, 'SPRING')
 ```
+
+## A final overview 
 
 
 

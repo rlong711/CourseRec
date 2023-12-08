@@ -318,8 +318,6 @@ course_recommend <- function(courses, data) {
 #' @param dept the three letter department code which the user wants to search
 #' @param data the data set of course offerings to be searched
 #' @return a data frame of all possible classes within the specified department which have no overlap with the entered classes
-#' @examples
-#' course_rec_dept(c('AFR11701', 'AFR17501', 'AFR24901'), 'MTH', course_data)
 #'
 #'@export
 
@@ -359,7 +357,7 @@ course_recommend_dept <- function(courses, dept, data) {
   data$overlap <- overlap
 
   available_classes <- data[data$overlap == FALSE & data$course_dept == dept, ]
-  # #returning results as a dataf rame which includes more information for the user
+  # #returning results as a dataframe which includes more information for the user
 
   result_df <- data.frame(
     course_id = available_classes$course_id,
@@ -377,8 +375,7 @@ course_recommend_dept <- function(courses, dept, data) {
 # will not be returned) as well as optionally specify a department
 
 #'
-#'Function which allows the user to optionally enter a day that will be excluded from the search (any classes that meet that day
-# will not be returned) as well as optionally specify a department.
+#'Function which allows the user to optionally enter a day that will be excluded from the search as well as optionally specify a department.
 #'
 #'@importFrom purrr map
 #'@param courses a character vector of three course ids
@@ -386,10 +383,8 @@ course_recommend_dept <- function(courses, dept, data) {
 #'@param dept the three letter department code which the user wants to search
 #'@param data the dataset of course offerings to be searched
 #'@return a dataframe containing all the classes the user can take with the corresponding optional criteria
-#'@examples
-#'course_rec_exclude_day_dept(c('AFR11701', 'AFR17501', 'AFR24901'), 'Monday', 'MTH', course_data)
 #'@export
-course_recommend_exlude_day <- function(courses, exclude_day, dept, data) {
+course_recommend_exclude_day <- function(courses, exclude_day, dept, data) {
 
   data <- data[!is.na(data$meeting_time), ]
 
