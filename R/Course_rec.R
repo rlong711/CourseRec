@@ -7,7 +7,6 @@
 #' @param year A scalar numeric vector indicating the year
 #' @param semester A character vector indicating whether the semester is the fall, spring or interterm semester
 #' @return A character vector containing a url to the course search website of the indicated semester
-#' @export
 create_url <- function(year, semester) {
 
   semester <- toupper(semester)
@@ -37,6 +36,7 @@ create_url <- function(year, semester) {
 #'
 #' @param x the meeting time column from course data set
 #' @return cleaned meeting time column only containing meeting time
+#' @importFrom mgsub mgsub
 remove_locations <- function(x) {
   z <- mgsub(pattern = c("Sabin-Reed ", "Ainsworth 304; ", "Ainsworth Gym; ", "[0-9]; "),
              replacement = c("SR ", "AG ", "AG ", " "), string = x)
@@ -54,7 +54,9 @@ remove_locations <- function(x) {
 #' @return data set
 #'
 #' @importFrom rvest read_html
-#' @importFrom rvest h
+#' @importFrom rvest html_text
+#' @importFrom rvest html_node
+#' @export
 scrap_course_data <- function(year, semester) {
 
   url <- create_url(year, semester)
@@ -163,6 +165,8 @@ course_time <- function(course, data) {
 #' @param courses a character vector of length 3 containing the course IDs of all 3 courses the user plans to take.
 #' @param data A data set containing entire course schedule.
 #' @return A data frame containing one column, which is a character vector of three meeting times
+#'
+#' @importFrom purrr map_chr
 course_schedule <- function(courses, data) {
 
   if (length(courses)!=3) {
@@ -186,6 +190,8 @@ course_schedule <- function(courses, data) {
 #'
 #' @param x A character vector of course meeting times.
 #' @return A list of fine grained schedules indicating one start time and one end time for each weekday.
+#'
+#' @importFrom purrr map2
 fine_grained_schedule <- function(x) {
   ## Split into pieces based on semicolon. This important for classes that have different meeting
   ## times on different days of the week.
@@ -263,6 +269,7 @@ find_overlap <- function(a, b) {
 #' @return A character vector of the course IDs of all available courses, meaning courses that do not have a
 #' time conflict with what the user's three courses.
 #' @importFrom purrr map
+#' @importFrom purrr map_lgl
 #'
 #' @export
 course_recommend <- function(courses, data) {
