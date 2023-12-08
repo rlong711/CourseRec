@@ -388,7 +388,7 @@ course_recommend_dept <- function(courses, dept, data) {
 #'@return a dataframe containing all the classes the user can take with the corresponding optional criteria
 #'@examples
 #'course_rec_exclude_day_dept(c('AFR11701', 'AFR17501', 'AFR24901'), 'Monday', 'MTH', course_data)
-#'
+#'@export
 course_recommend_exlude_day <- function(courses, exclude_day, dept, data) {
 
   data <- data[!is.na(data$meeting_time), ]
