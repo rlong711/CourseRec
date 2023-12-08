@@ -56,6 +56,7 @@ remove_locations <- function(x) {
 #' @importFrom rvest read_html
 #' @importFrom rvest html_text
 #' @importFrom rvest html_node
+#' @importFrom tibble add_row
 #' @export
 scrap_course_data <- function(year, semester) {
 
@@ -104,7 +105,7 @@ scrap_course_data <- function(year, semester) {
     description <- html_text(html_node(course_element, "span.course-result-detail.course-description p"))
 
     course_data <- course_data |>
-      add_row(
+      tibble::add_row(
         course_num = course_num,
         course_sub = course_sub,
         course_dept = course_dept,

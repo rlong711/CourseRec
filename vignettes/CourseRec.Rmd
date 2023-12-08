@@ -121,5 +121,12 @@ Bio department on top!
 
 ## User generated data 
 
-The 'CourseRec' package also provides users the opportunity to scrape their own data sets from the Smith website for specified semesters to be used with the functions. The 'scrap_course_data()' function allows users to input a year and a semester that they would like course data for and returns a data frame containing information such as course id's, instructors, meeting times, descriptions, and other relevant information. 
+The 'CourseRec' package also provides users the opportunity to scrape their own data sets from the Smith website for specified semesters to be used with the functions. The 'scrap_course_data()' function allows users to input a year and a semester that they would like course data for and returns a data frame containing information such as course id's, instructors, meeting times, descriptions, and other relevant information.
+
+## Scraping course offerings from Spring 2023 
+
+```{r}
+scrap_course_data(2022, 'SPRING')
+```
+
 
