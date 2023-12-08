@@ -143,7 +143,7 @@ scrap_course_data <- function(year, semester) {
 #' @param data A data set containing the entire course schedule.
 #' @return A character vector of the meeting time of the course.
 #'
-#' @export
+#'
 course_time <- function(course, data) {
 
   for (row in 1:nrow(data)) {
