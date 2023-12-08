@@ -31,7 +31,7 @@ library(CourseRec)
 
 # finding all classes that could possibly satisfy a 4th class 
 classes <- course_recommend(c('AFR11701', 'AFR17501', 'AFR24901'), course_data)
-classes 
+classes
 ```
 
 ## Finding possible courses based on time and a specific department 
@@ -49,7 +49,7 @@ classes_dept
 
 Given three user input course id's and optional department code as well as an optional day of the week argument, 'course_rec_exclude_day_dept()' returns a data frame of all classes which meet the criteria of time, department, and day of the week to be excluded from the search. In other words, while both the department and day of the week arguments are optional, if the user opts to enter an argument for excluded day, classes which meet on that day will not be returned, and user can further specify department, or choose to specify only one criteria of either department or day.
 
-```{r example}
+```{r}
 #finding all classes that can be taken within the math department and that don't meet on Friday 
 classes_day_dept <- course_recommend_exclude_day(c('AFR11701', 'AFR17501', 'AFR24901'), 'Friday', 'MTH', course_data)
 classes_day_dept

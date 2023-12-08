@@ -383,7 +383,9 @@ course_recommend_dept <- function(courses, dept, data) {
 #'@param dept the three letter department code which the user wants to search
 #'@param data the dataset of course offerings to be searched
 #'@return a dataframe containing all the classes the user can take with the corresponding optional criteria
+#'
 #'@export
+
 course_recommend_exclude_day <- function(courses, exclude_day, dept, data) {
 
   data <- data[!is.na(data$meeting_time), ]
