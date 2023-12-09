@@ -44,8 +44,10 @@ course_data <- scrap_course_data(2022, 'SPRING')
 Given 3 classes the user already plans to take, the course_recommend function returns all courses that do not have a time conflict:
 
 ```{r}
-# classes <- course_recommend(c('AFR11701', 'AFR17501', 'AFR24901'), course_data)
-# classes
+test_input <- c('AFR11701', 'AFR15501', 'AFR202am01')
+
+classes <- course_recommend(test_input, course_data)
+classes # wrong here, it's recommending AFR202am01
 ```
 
 ## Adding criteria to course recommender
@@ -53,7 +55,7 @@ Given 3 classes the user already plans to take, the course_recommend function re
 The user can choose to add more criteria than time to return more specialized courses. For example, they can find all possible courses based on time and a specific department:
 
 ```{r}
-classes_dept <- course_recommend_dept(c('AFR11701', 'AFR17501', 'AFR24901'), 'MTH', course_data)
+classes_dept <- course_recommend_dept(test_input, 'MTH', course_data)
 classes_dept
 ```
 
@@ -66,8 +68,4 @@ The user can also retrieve specific information about a certain course they are 
 library(dplyr)
 course_meeting_time('SDS27001', course_data)
 ```
-
-
-
-
 
