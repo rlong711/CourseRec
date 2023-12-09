@@ -131,8 +131,6 @@ scrap_course_data <- function(year, semester) {
 }
 
 
-
-
 #' @title Generate the meeting time of a course
 #'
 #' @description
@@ -142,8 +140,6 @@ scrap_course_data <- function(year, semester) {
 #' @param course A character vector identifying a course ID.
 #' @param data A data set containing the entire course schedule.
 #' @return A character vector of the meeting time of the course.
-#'
-#'
 course_time <- function(course, data) {
 
   for (row in 1:nrow(data)) {
