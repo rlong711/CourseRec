@@ -228,13 +228,14 @@ fine_grained_schedule <- function(x) {
 #' @importFrom lubridate hm
 find_overlap <- function(a, b) {
 
-  candidate_days <- a[names(b)]
+  candidate_days <- a[names(a) %in% names(b)]
+  b <- b[names(b) %in% names(a)]
 
   if (length(intersect(names(b), names(a))) == 0) {
     return(FALSE)
   }
 
-  purrr::map2_lgl(b, candidate_days, \(x, y) {
+  purrr::map2_lgl(rep(b, length(candidate_days) / length(b)), candidate_days, \(x, y) {
     x_time <- lubridate::hm(sub("( AM)|( PM)", "", x))
     y_time <- lubridate::hm(sub("( AM)|( PM)", "", y))
 
@@ -250,7 +251,7 @@ find_overlap <- function(a, b) {
     overlap <- (x_time[1] <= y_time[1]) & (y_time[1] <= x_time[2]) |
       (x_time[1] <= y_time[2]) & (y_time[2] <= x_time[2])
 
-    return(overlap)
+    return(any(overlap))
   })
 }
 
