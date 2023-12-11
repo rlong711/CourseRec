@@ -463,6 +463,7 @@ course_recommend_exclude_day <- function(courses, exclude_day, dept, data) {
 #' Given a subject code, this returns all courses with that subject code offered at Smith college.
 #'
 #' @param subject_code the course subject the user wants to find classes offered in.
+#' @param data The dataset of course offerings.
 #'
 #' @return All of the courses offered with the given course subject code.
 #'
@@ -471,7 +472,7 @@ course_recommend_exclude_day <- function(courses, exclude_day, dept, data) {
 #' @importFrom stringr str_replace_all
 #'
 #' @export
-subject_rec <- function(subject_code) {
+subject_rec <- function(subject_code, data) {
 
   '%notin%' <- Negate('%in%')
 
@@ -492,8 +493,8 @@ subject_rec <- function(subject_code) {
 #'
 #' Given a course_id, the function returns the meeting time for that specific course.
 #'
-#' @param course_id The specific course id for the course the user wants to know the meeting time of.
-#'
+#' @param course The specific course id for the course the user wants to know the meeting time of.
+#' @param data dataset of course offerings to be searched
 #' @return The meeting time that corresponds to the given course id.
 #'
 #' @importFrom dplyr filter
@@ -516,7 +517,8 @@ course_meeting_time <- function(course, data){
 #'
 #' Given a specific course id, this function returns a description of that course.
 #'
-#' @param course_id The specific course id
+#' @param course_id The specific course id.
+#' @param data The dataset of course offerings to be searched
 #'
 #' @return The description of the course that refers to the course id input.
 #' * description
