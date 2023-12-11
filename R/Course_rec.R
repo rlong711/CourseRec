@@ -476,10 +476,10 @@ subject_rec <- function(subject_code, data) {
 
   '%notin%' <- Negate('%in%')
 
-  if(subject_code %notin% course_data$course_sub){
+  if(subject_code %notin% data$course_sub){
     stop("Not a valid course subject. Please enter a valid course subject.")
   }
-  rec <- dplyr::filter(course_data, course_sub == subject_code) |>
+  rec <- dplyr::filter(data, course_sub == subject_code) |>
     dplyr::select(course_id, course_name, meeting_time, description)
 
   rec$course_name |>
@@ -517,7 +517,7 @@ course_meeting_time <- function(course, data){
 #'
 #' Given a specific course id, this function returns a description of that course.
 #'
-#' @param course_id The specific course id.
+#' @param course The specific course id.
 #' @param data The dataset of course offerings to be searched
 #'
 #' @return The description of the course that refers to the course id input.

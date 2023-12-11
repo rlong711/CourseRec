@@ -64,7 +64,7 @@ Given a subject code, the 'subject_rec()' function will return a data frame of a
 
 ```{r}
 # finding all the classes in the SDS department
-subject_courses <- subject_rec('SDS')
+subject_courses <- subject_rec('SDS',course_data)
 subject_courses
 ```
 

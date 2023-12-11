@@ -4,10 +4,12 @@
 \alias{subject_rec}
 \title{Gives reccomendation for user who wants to take a course with a specific course subject code.}
 \usage{
-subject_rec(subject_code)
+subject_rec(subject_code, data)
 }
 \arguments{
 \item{subject_code}{the course subject the user wants to find classes offered in.}
+
+\item{data}{The dataset of course offerings.}
 }
 \value{
 All of the courses offered with the given course subject code.

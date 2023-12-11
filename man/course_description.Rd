@@ -7,7 +7,9 @@
 course_description(course, data)
 }
 \arguments{
-\item{course_id}{The specific course id}
+\item{data}{The dataset of course offerings to be searched}
+
+\item{course_id}{The specific course id.}
 }
 \value{
 The description of the course that refers to the course id input.

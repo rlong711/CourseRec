@@ -7,7 +7,9 @@
 course_meeting_time(course, data)
 }
 \arguments{
-\item{course_id}{The specific course id for the course the user wants to know the meeting time of.}
+\item{course}{The specific course id for the course the user wants to know the meeting time of.}
+
+\item{data}{dataset of course offerings to be searched}
 }
 \value{
 The meeting time that corresponds to the given course id.
