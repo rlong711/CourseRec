@@ -31,7 +31,7 @@ library(CourseRec)
 
 # finding all classes that could possibly satisfy a 4th class 
 classes <- course_recommend(c('AFR11701', 'AFR17501', 'AFR24901'), course_data)
-classes
+classes[0:20]
 ```
 
 ## Finding possible courses based on time and a specific department 
@@ -88,15 +88,16 @@ course_description('SDS27001', course_data)
 
 ## Course Data 
 
-The metadata of all courses currently offered by Smith College is scraped from the online course catalog and aggregated into the 'course_data' data set
+The metadata of all courses currently offered by Smith College is scraped from the online course catalog and aggregated into the 'course_data' data set. The full data set contains 736 observations, each with 15 variables, such as the course number, the department, the subject, the instructor, meeting time, description, and more. 
 
 ```{r}
-head(course_data)
+head(course_data, n = 5)
 ```
+## Exploring the data set 
 
 What department has the most course offerings? 
 
-```{r}
+```{r, include = FALSE}
 library(dplyr)
 library(ggplot2)
 ```
@@ -117,6 +118,7 @@ ggplot(department_counts, aes(x = course_dept, y = n)) +
   
 
 ```
+
 Bio department on top! 
 
 ## User generated data 
@@ -126,10 +128,12 @@ The 'CourseRec' package also provides users the opportunity to scrape their own 
 ## Scraping course offerings from Spring 2023 
 
 ```{r}
-scrap_course_data(2022, 'SPRING')
+head(scrap_course_data(2022, 'SPRING'), n = 5)
 ```
 
 ## A final overview 
+
+
 
 
 
