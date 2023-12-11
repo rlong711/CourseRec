@@ -1,5 +1,5 @@
 test_that("scrap_course_data function returns a data frame with the correct input.", {
-  expect_type(scrap_course_data(2023, "Fall"), "list")
+  expect_equal(scrap_course_data(2023, "Fall"), course_data)
 })
 
 test_that("course_recommend pints out desired output", {
@@ -7,9 +7,11 @@ test_that("course_recommend pints out desired output", {
 })
 
 test_that("course_description test", {
-  expect_equal(course_description("AFR11701", course_data), course_data |>
-                 dplyr::filter(course_id == "AFR11701") |>
-                 dplyr::select(description) )
+  expect_error(course_description("AHS", course_data), "Course ID input is not valid. Pease input a valid course ID.")
 })
+
+
+
+
 
 
