@@ -277,10 +277,10 @@ course_recommend <- function(courses, data) {
   data <- data[!is.na(data$meeting_time), ]
 
   # checking if course exists before proceeding
-  # if(!all(courses %in% data$course_id)) {
-  #   warning("One or more courses does not exist. Please reenter courses in correct format")
-  #   return(NULL)
-  # }
+  if(!all(courses %in% data$course_id)) {
+    warning("One or more courses does not exist. Please reenter courses in correct format")
+    return(NULL)
+  }
 
   current_courses_schedule <- course_schedule(courses, data) |>
     purrr::map(fine_grained_schedule)
