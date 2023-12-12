@@ -47,7 +47,7 @@ Given 3 classes the user already plans to take, the course_recommend function re
 test_input <- c('AFR11701', 'AFR15501', 'AFR202am01')
 
 classes <- course_recommend(test_input, course_data)
-classes # wrong here, it's recommending AFR202am01
+# classes[348,"meeting_time"]
 ```
 
 ## Adding criteria to course recommender
