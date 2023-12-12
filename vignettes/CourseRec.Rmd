@@ -133,6 +133,8 @@ head(scrap_course_data(2022, 'SPRING'), n = 5)
 
 ## A final overview 
 
+This package can be used for a wide variety of needs as determined by the user. From searching for information about specific courses you want to know more about, to finding courses based on specific interests or days you do not want to have to wake up early on, 
+
 
 
 
