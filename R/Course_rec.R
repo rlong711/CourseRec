@@ -228,7 +228,9 @@ fine_grained_schedule <- function(x) {
 #' @importFrom lubridate hm
 find_overlap <- function(a, b) {
 
-  candidate_days <- a[names(b)]
+  intersecting_days <- names(a) %in% names(b)
+  candidate_days <- a[intersecting_days]
+  b <- b[names(candidate_days)]
 
   if (length(intersect(names(b), names(a))) == 0) {
     return(FALSE)
@@ -295,21 +297,9 @@ course_recommend <- function(courses, data) {
 
   overlap[is.na(overlap)] <- FALSE
 
-  data$overlap <- overlap
-
-  available_courses <- vector("character")
-
-  for (row in 1:nrow(data)) {
-    course_id <- data[row, "course_id"]
-    overlap <- data[row, "overlap"]
-
-    if (overlap == FALSE) {
-      available_courses <- append(available_courses, course_id)
-    }
-  }
-
-  return(available_courses)
+  return(data[!overlap, ])
 }
+
 
 #'
 #' A function which allows the user to specify a department they would like to take

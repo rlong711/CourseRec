@@ -31,7 +31,7 @@ library(CourseRec)
 
 # finding all classes that could possibly satisfy a 4th class 
 classes <- course_recommend(c('AFR11701', 'AFR17501', 'AFR24901'), course_data)
-classes[0:20]
+classes[0:20,]
 ```
 
 ## Finding possible courses based on time and a specific department 

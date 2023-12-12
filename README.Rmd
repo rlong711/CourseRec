@@ -47,7 +47,8 @@ Given 3 classes the user already plans to take, the course_recommend function re
 test_input <- c('AFR11701', 'AFR15501', 'AFR202am01')
 
 classes <- course_recommend(test_input, course_data)
-classes # wrong here, it's recommending AFR202am01
+# classes 
+# classes[348,"meeting_time"]
 ```
 
 ## Adding criteria to course recommender
@@ -56,7 +57,7 @@ The user can choose to add more criteria than time to return more specialized co
 
 ```{r}
 classes_dept <- course_recommend_dept(test_input, 'MTH', course_data)
-classes_dept
+# classes_dept
 ```
 
 
