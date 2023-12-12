@@ -31,7 +31,7 @@ library(CourseRec)
 
 # finding all classes that could possibly satisfy a 4th class 
 classes <- course_recommend(c('AFR11701', 'AFR17501', 'AFR24901'), course_data)
-classes[0:20]
+classes[0:20,]
 ```
 
 ## Finding possible courses based on time and a specific department 
@@ -39,7 +39,6 @@ classes[0:20]
 Given three user input course id's as well as a user specified three letter department code (see course_data data set for possible departments), 'course_rec_dept()' checks for overlapping times and returns only the classes within the specific department input during the function call that the user could take. This function returns a data frame containing the course id's, the instructor, the meeting time, the full course name, and the description of the class. 
 
 ```{r}
-
 #finding all classes that can be taken within the math department 
 classes_dept <- course_recommend_dept(c('AFR11701', 'AFR17501', 'AFR24901'), 'MTH', course_data)
 classes_dept
