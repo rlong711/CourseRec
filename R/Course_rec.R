@@ -312,6 +312,10 @@ course_recommend <- function(courses, data) {
 #' @return a data frame of all possible classes within the specified department which have no overlap with the entered classes
 #'
 #'@export
+#'
+#'@examples
+#'# finding courses in math department
+#'course_recommend_dept(c('AFR11701', 'AFR17501', 'AFR24901'), 'MTH', course_data)
 
 course_recommend_dept <- function(courses, dept, data) {
 
@@ -375,8 +379,12 @@ course_recommend_dept <- function(courses, dept, data) {
 #'@param dept the three letter department code which the user wants to search
 #'@param data the dataset of course offerings to be searched
 #'@return a dataframe containing all the classes the user can take with the corresponding optional criteria
-#'
 #'@export
+#'
+#'@examples
+#'# excluding friday
+#'course_recommend_exclude_day(c('AMS215sc01', 'AFR17501', 'AFR24901'), 'Friday', 'MTH', course_data)
+#'
 
 course_recommend_exclude_day <- function(courses, exclude_day, dept, data) {
 
