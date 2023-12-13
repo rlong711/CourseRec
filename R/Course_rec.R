@@ -53,6 +53,9 @@ remove_locations <- function(x) {
 #' @param semester A character vector indicating whether the semester is the fall, spring or interterm semester
 #' @return data set
 #'
+#' @examples
+#' scrap_course_data(2022, 'SPRING')
+#'
 #' @importFrom rvest read_html
 #' @importFrom rvest html_text
 #' @importFrom rvest html_node
@@ -267,6 +270,10 @@ find_overlap <- function(a, b) {
 #' @param data Data set containing entire course schedule.
 #' @return A character vector of the course IDs of all available courses, meaning courses that do not have a
 #' time conflict with what the user's three courses.
+#'
+#' @examples
+#' course_recommend(c('AFR11701', 'AFR17501', 'AFR24901'), course_data)
+#'
 #' @importFrom purrr map
 #' @importFrom purrr map_lgl
 #'
@@ -311,11 +318,11 @@ course_recommend <- function(courses, data) {
 #' @param data the data set of course offerings to be searched
 #' @return a data frame of all possible classes within the specified department which have no overlap with the entered classes
 #'
-#'@export
+#' @export
 #'
-#'@examples
-#'# finding courses in math department
-#'course_recommend_dept(c('AFR11701', 'AFR17501', 'AFR24901'), 'MTH', course_data)
+#' @examples
+#' # finding courses in math department
+#' course_recommend_dept(c('AFR11701', 'AFR17501', 'AFR24901'), 'MTH', course_data)
 
 course_recommend_dept <- function(courses, dept, data) {
 

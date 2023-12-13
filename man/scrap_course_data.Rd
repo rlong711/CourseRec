@@ -17,3 +17,7 @@ data set
 \description{
 Given the year and semester, creates a data set containing info from all courses in that semester from website
 }
+\examples{
+scrap_course_data(2022, 'SPRING')
+
+}

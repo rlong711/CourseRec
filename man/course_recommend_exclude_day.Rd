@@ -21,3 +21,8 @@ a dataframe containing all the classes the user can take with the corresponding 
 \description{
 Function which allows the user to optionally enter a day that will be excluded from the search as well as optionally specify a department.
 }
+\examples{
+# excluding friday
+course_recommend_exclude_day(c('AMS215sc01', 'AFR17501', 'AFR24901'), 'Friday', 'MTH', course_data)
+
+}
