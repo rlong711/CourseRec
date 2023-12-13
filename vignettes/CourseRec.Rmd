@@ -1,0 +1,141 @@
+---
+title: "CourseRec Overview"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{CourseRec Overview}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(CourseRec)
+
+```
+
+The 'CourseRec' package provides users with the ability to input 3 courses which they want to take and will return courses from the Smith College catalog ('https://www.smith.edu/apps/course_search/') which are available based on different optional criteria. It includes a dataset which provides information about all course offerings, the instructors, departments, descriptions, and other relevant details. It also allows users to gather course offerings for a different semester and scrape the data they desire. 
+## Searching for courses with no time conflicts and other criteria 
+
+## Finding possible courses based solely on time
+
+Given three user input courses -- following the format of three letter course subject (e.g. 'CHI' for 'Chinese'), the course number, and the course section combined (e.g. 'CHI11101' for Chinese 111-01), also known as the course id -- the 'course_recommend()' function will check for overlapping times and return all classes which do not overlap with the input classes. Specifically, 'course_recommend()' returns the course id's. 
+
+```{r}
+library(CourseRec)
+
+# finding all classes that could possibly satisfy a 4th class 
+classes <- course_recommend(c('AFR11701', 'AFR17501', 'AFR24901'), course_data)
+classes[0:20,]
+```
+
+## Finding possible courses based on time and a specific department 
+
+Given three user input course id's as well as a user specified three letter department code (see course_data data set for possible departments), 'course_rec_dept()' checks for overlapping times and returns only the classes within the specific department input during the function call that the user could take. This function returns a data frame containing the course id's, the instructor, the meeting time, the full course name, and the description of the class. 
+
+```{r}
+
+#finding all classes that can be taken within the math department 
+classes_dept <- course_recommend_dept(c('AFR11701', 'AFR17501', 'AFR24901'), 'MTH', course_data)
+classes_dept
+```
+
+## Finding possible courses basd on time, department and/or excluding a certain day of the week
+
+Given three user input course id's and optional department code as well as an optional day of the week argument, 'course_rec_exclude_day_dept()' returns a data frame of all classes which meet the criteria of time, department, and day of the week to be excluded from the search. In other words, while both the department and day of the week arguments are optional, if the user opts to enter an argument for excluded day, classes which meet on that day will not be returned, and user can further specify department, or choose to specify only one criteria of either department or day.
+
+```{r}
+#finding all classes that can be taken within the math department and that don't meet on Friday 
+classes_day_dept <- course_recommend_exclude_day(c('AFR11701', 'AFR17501', 'AFR24901'), 'Friday', 'MTH', course_data)
+classes_day_dept
+```
+
+## Extracting general information about courses
+
+## Return information about all courses offered within a department 
+
+Given a subject code, the 'subject_rec()' function will return a data frame of all the classes offered in that department, including id, name, meeting time, and description. 
+
+
+```{r}
+# finding all the classes in the SDS department
+subject_courses <- subject_rec('SDS',course_data)
+subject_courses
+```
+
+## Returning just the meeting time of a specific course
+
+Given a course id, the 'course_meeting_time()' function returns just the meeting time of that specific course. This can be used as a good way to explore classes if you are beginning to put together a schedule or do not yet have 3 classes you know you want to take.
+
+```{r}
+# finding the meeting time of 'SDS270'
+library(dplyr)
+course_meeting_time('SDS27001', course_data)
+
+```
+## Getting the description of a specific course
+
+Given the course id, the 'course_description()' function will return the description of the course. Similar to 'course_meeting_time(),' the 'course_description()' function is useful for exploring courses generally. 
+```{r}
+# getting the description of SDS270
+course_description('SDS27001', course_data)
+```
+
+## Course Data 
+
+The metadata of all courses currently offered by Smith College is scraped from the online course catalog and aggregated into the 'course_data' data set. The full data set contains 736 observations, each with 15 variables, such as the course number, the department, the subject, the instructor, meeting time, description, and more. 
+
+```{r}
+head(course_data, n = 5)
+```
+## Exploring the data set 
+
+What department has the most course offerings? 
+
+```{r, include = FALSE}
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+
+# finding the total number of offerings by department and plotting
+course_data <- course_data |>
+  group_by(course_dept)
+
+department_counts <- course_data |>
+  count(course_dept)
+
+ggplot(department_counts, aes(x = course_dept, y = n)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) + 
+  labs(title = "Counts of Course Offerings at Smith College by Department", x = "Department", y = "Count")
+  
+
+```
+
+Bio department on top! 
+
+## User generated data 
+
+The 'CourseRec' package also provides users the opportunity to scrape their own data sets from the Smith website for specified semesters to be used with the functions. The 'scrap_course_data()' function allows users to input a year and a semester that they would like course data for and returns a data frame containing information such as course id's, instructors, meeting times, descriptions, and other relevant information.
+
+## Scraping course offerings from Spring 2023 
+
+```{r}
+head(scrap_course_data(2022, 'SPRING'), n = 5)
+```
+
+## A final overview 
+
+This package can be used for a wide variety of needs as determined by the user. From searching for information about specific courses you want to know more about, to finding courses based on specific interests or days you do not want to have to wake up early on, 
+
+
+
+
+
