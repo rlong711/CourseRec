@@ -470,7 +470,11 @@ course_recommend_exclude_day <- function(courses, exclude_day, dept, data) {
 #' @param subject_code the course subject the user wants to find classes offered in.
 #' @param data The dataset of course offerings.
 #'
-#' @return All of the courses offered with the given course subject code.
+#' @return All of the courses offered with the given course subject code.\
+#'
+#' @examples
+#' # Wanting to find all courses with the 'HST' subject tag.
+#' subject_rec("HST", course_data)
 #'
 #' @importFrom dplyr filter
 #' @importFrom dplyr select
@@ -502,6 +506,10 @@ subject_rec <- function(subject_code, data) {
 #' @param data dataset of course offerings to be searched
 #' @return The meeting time that corresponds to the given course id.
 #'
+#' @examples
+#' # Finding meeting time for AFR11701 class.
+#' course_meeting_time("AFR11701", course_data)
+#'
 #' @importFrom dplyr filter
 #' @importFrom dplyr select
 #'
@@ -527,6 +535,10 @@ course_meeting_time <- function(course, data){
 #'
 #' @return The description of the course that refers to the course id input.
 #' * description
+#'
+#' @examples
+#' # Returns course description for the AFR11701 class.
+#' course_description("AFR11701", course_data)
 #'
 #' @importFrom dplyr filter
 #' @importFrom dplyr select
