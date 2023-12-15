@@ -470,7 +470,7 @@ course_recommend_exclude_day <- function(courses, exclude_day, dept, data) {
 #' @param subject_code the course subject the user wants to find classes offered in.
 #' @param data The dataset of course offerings.
 #'
-#' @return All of the courses offered with the given course subject code.\
+#' @return All of the courses offered with the given course subject code.
 #'
 #' @examples
 #' # Wanting to find all courses with the 'HST' subject tag.
@@ -534,7 +534,6 @@ course_meeting_time <- function(course, data){
 #' @param data The dataset of course offerings to be searched
 #'
 #' @return The description of the course that refers to the course id input.
-#' * description
 #'
 #' @examples
 #' # Returns course description for the AFR11701 class.
