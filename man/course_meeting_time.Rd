@@ -17,3 +17,8 @@ The meeting time that corresponds to the given course id.
 \description{
 Given a course_id, the function returns the meeting time for that specific course.
 }
+\examples{
+# Finding meeting time for AFR11701 class.
+course_meeting_time("AFR11701", course_data)
+
+}
