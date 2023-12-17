@@ -1,6 +1,9 @@
 ---
 title: "CourseRec Overview"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    fig_width: 8 
+    fig_height: 6
 vignette: >
   %\VignetteIndexEntry{CourseRec Overview}
   %\VignetteEngine{knitr::rmarkdown}
@@ -26,15 +29,16 @@ For reference, the CourseRec package functions which return available classes wi
 
 ## Finding possible courses based solely on time
 
-Given three user input courses -- following the format of three letter course subject (e.g. 'CHI' for 'Chinese'), the course number, and the course section combined (e.g. 'CHI11101' for Chinese 111-01), also known as the course id -- the 'course_recommend()' function will check for overlapping times and return all classes which do not overlap with the input classes. Specifically, 'course_recommend()' returns the course id's. 
+Given three user input courses -- following the format of three letter course subject (e.g. 'CHI' for 'Chinese'), the course number, and the course section combined (e.g. 'CHI11101' for Chinese 111-01), also known as the course id -- the 'course_recommend()' function will check for overlapping times and return all classes which do not overlap with the input classes. Specifically, 'course_recommend()' returns a data frame. 
 
 ```{r}
 library(CourseRec)
 
 # finding all classes that could possibly satisfy a 4th class 
 classes <- course_recommend(c('AFR11701', 'AFR17501', 'AFR24901'), course_data)
-classes[0:20]
+classes[0:5,]
 ```
+With this user input, there are 483 classes which you could take!
 
 ## Finding possible courses based on time and a specific department 
 
@@ -116,7 +120,7 @@ department_counts <- course_data |>
 ggplot(department_counts, aes(x = course_dept, y = n)) +
   geom_col() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) + 
-  labs(title = "Counts of Course Offerings at Smith College by Department", x = "Department", y = "Count")
+  labs(title = "Counts of Course Offerings at Smith College by Department", x = "Department", y = "Count") 
   
 
 ```
