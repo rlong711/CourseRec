@@ -19,3 +19,7 @@ time conflict with what the user's three courses.
 Given three courses the user plans to take,
 this functions returns a character vector of all courses available to the user.
 }
+\examples{
+course_recommend(c('AFR11701', 'AFR17501', 'AFR24901'), course_data)
+
+}

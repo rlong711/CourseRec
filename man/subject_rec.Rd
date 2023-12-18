@@ -12,8 +12,13 @@ subject_rec(subject_code, data)
 \item{data}{The dataset of course offerings.}
 }
 \value{
-All of the courses offered with the given course subject code.
+All of the courses offered with the given course subject code.\
 }
 \description{
 Given a subject code, this returns all courses with that subject code offered at Smith college.
+}
+\examples{
+# Wanting to find all courses with the 'HST' subject tag.
+subject_rec("HST", course_data)
+
 }

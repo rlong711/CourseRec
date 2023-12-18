@@ -20,3 +20,8 @@ The description of the course that refers to the course id input.
 \description{
 Given a specific course id, this function returns a description of that course.
 }
+\examples{
+# Returns course description for the AFR11701 class.
+course_description("AFR11701", course_data)
+
+}

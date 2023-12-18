@@ -21,3 +21,7 @@ a data frame of all possible classes within the specified department which have 
 A function which allows the user to specify a department they would like to take
 a class in, e.g. MTH for the Math department
 }
+\examples{
+# finding courses in math department
+course_recommend_dept(c('AFR11701', 'AFR17501', 'AFR24901'), 'MTH', course_data)
+}
